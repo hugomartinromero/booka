@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "801473124872",
+    "firebase_url": "https://booka-hg-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "booka-hg",
+    "storage_bucket": "booka-hg.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801473124872:android:d48d8b82fb571ee7cf0fbd",
+        "android_client_info": {
+          "package_name": "com.fireboy.booka"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm_y6NzIFYge8ut6MeWKb0xPI940mTsNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
