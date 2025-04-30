@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="principal">#17283A</color>
+    <!-- Colores Booka -->
+    <color name="booka_primary">#17283A</color> <!-- Azul oscuro Booka -->
+    <color name="booka_primary_variant">#17183A</color> <!-- Aún más oscuro -->
+    <color name="booka_secondary">#515E6B</color> <!-- Azul intermedio para detalles -->
+
+    <color name="booka_background">#FFFFFF</color> <!-- Fondo blanco -->
+
+    <color name="booka_text_primary">#111827</color> <!-- Gris oscuro casi negro -->
+    <color name="booka_text_secondary">#6B7280</color> <!-- Gris medio para descripciones -->
+
+    <color name="white">#FFFFFF</color> <!-- Blanco -->
+
+    <!-- Grises para inputs, bordes suaves -->
+    <color name="booka_input_background">#F9FAFB</color>
+    <color name="booka_input_stroke">#D1D5DB</color>
 </resources>
