@@ -1,9 +1,51 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Booka" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema general -->
+    <style name="Theme.Booka" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/booka_primary</item>
+        <item name="colorPrimaryVariant">@color/booka_primary_variant</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/booka_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Fondo -->
+        <item name="android:colorBackground">@color/booka_background</item>
+
+        <!-- Color de textos -->
+        <item name="android:textColorPrimary">@color/booka_text_primary</item>
+        <item name="android:textColorSecondary">@color/booka_text_secondary</item>
+
+        <!-- Estilos de botón -->
+        <item name="buttonStyle">@style/Widget.Booka.Button</item>
+
+        <!-- Estilos de TextInput -->
+        <item name="textInputStyle">@style/Widget.Booka.TextInput</item>
+
+        <!-- Estilo de BottomNavigation -->
+        <item name="bottomNavigationStyle">@style/Widget.Booka.BottomNavigation</item>
     </style>
 
-    <style name="Theme.Booka" parent="Base.Theme.Booka" />
+    <!-- Estilo de botones -->
+    <style name="Widget.Booka.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/booka_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">25dp</item>
+    </style>
+
+    <!-- Estilo de TextInputLayout -->
+    <style name="Widget.Booka.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxStrokeColor">@color/booka_primary</item>
+        <item name="hintTextColor">@color/booka_text_secondary</item>
+    </style>
+
+    <!-- Estilo de BottomNavigationView -->
+    <style name="Widget.Booka.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint">@color/selector_bottom_nav</item>
+        <item name="itemTextColor">@color/selector_bottom_nav</item>
+        <item name="backgroundTint">@color/booka_primary</item>
+    </style>
+
 </resources>
