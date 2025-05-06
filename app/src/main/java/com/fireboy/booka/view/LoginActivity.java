@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText txtEmail, txtPassword;
@@ -53,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         // Acciones de los botones
         btnGoogle.setOnClickListener(v -> iniciarSesionConGoogle());
 
-        btnLogIn.setOnClickListener(v -> firebase.iniciarSesionEmail(txtEmail.getText().toString().trim(), txtPassword.getText().toString().trim()));
+        btnLogIn.setOnClickListener(v -> firebase.iniciarSesionEmail(Objects.requireNonNull(txtEmail.getText()).toString().trim(), Objects.requireNonNull(txtPassword.getText()).toString().trim()));
     }
 
     // Iniciar sesión con Google
