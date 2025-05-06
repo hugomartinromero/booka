@@ -3,4 +3,11 @@
     <string name="correo_electronico">Correo electrónico</string>
     <string name="contrasena">Contraseña</string>
     <string name="default_web_client_id">801473124872-j6tdv9ectij8h81jiks9scb7iqktd2ev.apps.googleusercontent.com</string>
+    <string name="has_olvidado_la_contrase_a">¿Has olvidado la contraseña?</string>
+    <string name="conectar_con_google">Conectar con Google</string>
+    <string name="no_tienes_cuenta_reg_strate">¿No tienes cuenta? Regístrate</string>
+    <string name="iniciar_sesi_n">Iniciar Sesión</string>
+    <string name="nombre">Nombre</string>
+    <string name="confirmar_contrase_a">Confirmar contraseña</string>
+    <string name="registrarse">Registrarse</string>
 </resources>
