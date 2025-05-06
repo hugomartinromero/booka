@@ -2,4 +2,5 @@
     <string name="app_name">Booka</string>
     <string name="correo_electronico">Correo electrónico</string>
     <string name="contrasena">Contraseña</string>
+    <string name="default_web_client_id">801473124872-j6tdv9ectij8h81jiks9scb7iqktd2ev.apps.googleusercontent.com</string>
 </resources>
