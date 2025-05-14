@@ -24,6 +24,7 @@
         tools:ignore="NotSibling" />
 
     <com.google.android.material.textfield.TextInputLayout
+        app:expandedHintEnabled="false"
         android:id="@+id/txtEmailContainer"
         style="@style/Widget.Booka.TextInput"
         android:layout_width="match_parent"
@@ -54,11 +55,13 @@
             android:layout_height="50dp"
             android:fontFamily="@font/montserrat"
             android:singleLine="true"
-            android:textColor="@color/booka_secondary" />
+            android:textColor="@color/booka_secondary"
+            android:textStyle="bold" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        app:expandedHintEnabled="false"
         android:id="@+id/txtPasswordContainer"
         style="@style/Widget.Booka.TextInput"
         android:layout_width="0dp"
@@ -66,6 +69,7 @@
         android:layout_marginVertical="10dp"
         android:backgroundTint="@color/booka_input_background"
         android:hint="@string/contrasena"
+        android:textColorHint="@color/booka_secondary"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="25dp"
         app:boxCornerRadiusBottomStart="25dp"
@@ -87,7 +91,8 @@
             android:password="true"
             android:singleLine="true"
             android:textColor="@color/booka_secondary"
-            android:textColorHint="@color/booka_secondary" />
+            android:textColorHint="@color/booka_secondary"
+            android:textStyle="bold" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
