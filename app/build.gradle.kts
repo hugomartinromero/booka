@@ -39,11 +39,13 @@ dependencies {
     implementation (libs.material.v1110)
     implementation (libs.firebase.auth)
     implementation (libs.play.services.auth)
+    implementation (libs.material)
 
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

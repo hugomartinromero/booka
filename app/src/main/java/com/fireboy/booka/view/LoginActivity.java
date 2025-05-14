@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         // Inicializar controlador de Firebase
         firebase = new FirebaseController(this);
 
-        // Navegación entre pantallas
         lblForgottenPassword.setOnClickListener(v -> UiExtensions.intent(this, RestorePasswordActivity.class));
         lblSignUp.setOnClickListener(v -> UiExtensions.intent(this, SignUpActivity.class));
 
@@ -52,9 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Acciones de los botones
         btnGoogle.setOnClickListener(v -> iniciarSesionConGoogle());
-
         btnLogIn.setOnClickListener(v -> firebase.iniciarSesionEmail(Objects.requireNonNull(txtEmail.getText()).toString().trim(), Objects.requireNonNull(txtPassword.getText()).toString().trim()));
     }
 
@@ -62,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
     private void iniciarSesionConGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+
     }
 
     // Resultado del intent de login con Google
@@ -83,7 +82,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // Vincula las vistas del XML
     private void initComponents() {
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtPassword);

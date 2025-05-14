@@ -10,4 +10,7 @@
     <string name="nombre">Nombre</string>
     <string name="confirmar_contrase_a">Confirmar contraseña</string>
     <string name="registrarse">Registrarse</string>
+    <string name="buscar">Buscar</string>
+    <string name="_4_5">4.5</string>
+    <string name="textview">TextView</string>
 </resources>
