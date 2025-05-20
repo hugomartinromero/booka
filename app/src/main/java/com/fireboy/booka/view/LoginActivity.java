@@ -8,7 +8,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fireboy.booka.R;
-import com.fireboy.booka.controller.FirebaseController;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         // Inicializar controlador de Firebase
         firebase = new FirebaseController(this);
 
-        lblForgottenPassword.setOnClickListener(v -> UiExtensions.intent(this, RestorePasswordActivity.class));
-        lblSignUp.setOnClickListener(v -> UiExtensions.intent(this, SignUpActivity.class));
+        lblForgottenPassword.setOnClickListener(v -> UiExtensions.navigateTo(this, RestorePasswordActivity.class));
+        lblSignUp.setOnClickListener(v -> UiExtensions.navigateTo(this, SignUpActivity.class));
 
         // Configurar Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
