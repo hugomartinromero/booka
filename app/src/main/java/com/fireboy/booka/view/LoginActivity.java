@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fireboy.booka.R;
+import com.fireboy.booka.controller.AuthController;
+import com.fireboy.booka.controller.UserController;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,7 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView lblForgottenPassword, lblSignUp;
     private MaterialButton btnGoogle, btnLogIn;
 
-    private FirebaseController firebase;
+    private AuthController authController;
+    private UserController userController;
     private GoogleSignInClient mGoogleSignInClient;
 
     private static final int RC_SIGN_IN = 9001;
@@ -36,12 +39,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         UiExtensions.changeStatusBarColor(this, R.color.booka_background);
-
         initComponents();
 
-        // Inicializar controlador de Firebase
-        firebase = new FirebaseController(this);
+        // Inicializar controladores
+        authController = new AuthController(this);
+        userController = new UserController();
 
+        // Navegación entre pantallas
         lblForgottenPassword.setOnClickListener(v -> UiExtensions.navigateTo(this, RestorePasswordActivity.class));
         lblSignUp.setOnClickListener(v -> UiExtensions.navigateTo(this, SignUpActivity.class));
 
@@ -50,16 +54,15 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        btnGoogle.setOnClickListener(v -> iniciarSesionConGoogle());
-        btnLogIn.setOnClickListener(v -> firebase.iniciarSesionEmail(Objects.requireNonNull(txtEmail.getText()).toString().trim(), Objects.requireNonNull(txtPassword.getText()).toString().trim()));
+        // Acciones de botones
+        btnGoogle.setOnClickListener(v -> launchGoogleSignIn());
+        btnLogIn.setOnClickListener(v -> authController.signInWithEmail(Objects.requireNonNull(txtEmail.getText()).toString().trim(), Objects.requireNonNull(txtPassword.getText()).toString().trim()));
     }
 
-    // Iniciar sesión con Google
-    private void iniciarSesionConGoogle() {
+    // Lanzar login de Google
+    private void launchGoogleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
-
     }
 
     // Resultado del intent de login con Google
@@ -71,9 +74,8 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                if (account != null) {
-                    String idToken = account.getIdToken();
-                    firebase.iniciarSesionConGoogle(idToken);
+                if (account != null && account.getIdToken() != null) {
+                    authController.signInWithGoogle(account.getIdToken(), userController);
                 }
             } catch (ApiException e) {
                 Toast.makeText(this, "Error al iniciar sesión con Google", Toast.LENGTH_SHORT).show();
