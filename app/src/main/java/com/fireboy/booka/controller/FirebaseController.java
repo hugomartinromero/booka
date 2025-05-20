@@ -4,15 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.fireboy.booka.model.Business;
 import com.fireboy.booka.view.MainActivity;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseController {
@@ -20,6 +24,11 @@ public class FirebaseController {
     private final FirebaseFirestore db;
     private final Activity activity;
 
+    public FirebaseController() {
+        this.mAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+        this.activity = null;
+    }
     public FirebaseController(Activity activity) {
         this.mAuth = FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
@@ -48,7 +57,7 @@ public class FirebaseController {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
                     if (user != null) {
-                        guardarUsuarioFirestore(user); // 👈 aquí se guarda el usuario
+                        guardarUsuarioFirestore(user);
                     }
                 })
                 .addOnFailureListener(e -> {
