@@ -8,6 +8,7 @@ public class Business {
     private String name;
     private Category category;
     private String address;
+    private String img;
     private User owner;
     private Map<String, DaySchedule> schedule;
     private float rating;
@@ -16,11 +17,12 @@ public class Business {
     public Business() {
     }
 
-    public Business(String id, String name, Category category, String address, User owner, Map<String, DaySchedule> schedule, float rating, List<Service> services) {
+    public Business(String id, String name, Category category, String address, String img, User owner, Map<String, DaySchedule> schedule, float rating, List<Service> services) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.address = address;
+        this.img = img;
         this.owner = owner;
         this.schedule = schedule;
         this.rating = rating;
@@ -28,7 +30,7 @@ public class Business {
     }
 
     public String getId() {
-        return name;
+        return id;
     }
 
     public void setId(String id) {
@@ -57,6 +59,14 @@ public class Business {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public User getOwner() {

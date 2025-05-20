@@ -1,6 +1,7 @@
 package com.fireboy.booka.model;
 
 public class User {
+    private String id;
     private String email;
     private String username;
     private String rol;
@@ -9,11 +10,20 @@ public class User {
     public User() {
     }
 
-    public User(String email, String username, String rol, String img) {
+    public User(String id, String email, String username, String rol, String img) {
+        this.id = id;
         this.email = email;
         this.username = username;
         this.rol = rol;
         this.img = img;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {

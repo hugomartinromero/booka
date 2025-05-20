@@ -40,6 +40,7 @@ dependencies {
     implementation (libs.firebase.auth)
     implementation (libs.play.services.auth)
     implementation (libs.material)
+    implementation (libs.github.glide)
 
     implementation(libs.appcompat)
     implementation(libs.material)
