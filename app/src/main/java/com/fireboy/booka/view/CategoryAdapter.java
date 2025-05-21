@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
+import com.fireboy.booka.model.Business;
 import com.fireboy.booka.model.Category;
+import com.fireboy.booka.utils.HorizontalSpacingDecoration;
 
 import java.util.List;
 
@@ -40,11 +42,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         if (category.isActive()) {
             holder.lblCategory.setText(category.getName());
-            businessController.getAllBusinesses(negocios -> {
-                int spacing = (int) (context.getResources().getDisplayMetrics().density * 30); // 30dp
+            int spacing = (int) (context.getResources().getDisplayMetrics().density * 30); // 30dp
 
-                holder.rvBusiness.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+            holder.rvBusiness.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+
+            if (holder.rvBusiness.getItemDecorationCount() == 0) {
                 holder.rvBusiness.addItemDecoration(new HorizontalSpacingDecoration(spacing));
+            }
+
+            businessController.getBusinessByCategory(category.getName(), negocios -> {
                 holder.rvBusiness.setAdapter(new BusinessAdapter(negocios, category.getName()));
             });
         }
@@ -67,31 +73,4 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             rvBusiness = itemView.findViewById(R.id.rvBusiness);
         }
     }
-
-    public class HorizontalSpacingDecoration extends RecyclerView.ItemDecoration {
-        private final int space;
-
-        public HorizontalSpacingDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
-                                   @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view);
-            int itemCount = parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
-
-            outRect.left = space / 2;
-            outRect.right = space / 2;
-
-            if (position == 0) {
-                outRect.left = space;
-            }
-
-            if (position == itemCount - 1) {
-                outRect.right = space;
-            }
-        }
-    }
-
 }

@@ -47,4 +47,26 @@ public class BusinessController {
                     }
                 });
     }
+
+    public void getBusinessByCategory(String category, BusinessCallback callback) {
+        db.collection("business")
+                .whereEqualTo("category", category)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Business> list = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Business business = doc.toObject(Business.class);
+                        if (business != null) {
+                            business.setId(doc.getId());
+                            list.add(business);
+                        }
+                    }
+                    callback.onResult(list);
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    callback.onResult(new ArrayList<>()); // vacío si falla
+                });
+    }
+
 }

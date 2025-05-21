@@ -2,19 +2,18 @@ package com.fireboy.booka.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsetsController;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-public class UiExtensions {
+import com.fireboy.booka.R;
 
+public class UiExtensions {
     public static void navigateTo(Activity activity, Class<?> destination, boolean finish) {
         Intent intent = new Intent(activity, destination);
         activity.startActivity(intent);
@@ -28,21 +27,22 @@ public class UiExtensions {
     }
 
     public static void changeStatusBarColor(Activity activity, int colorRes) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         Window window = activity.getWindow();
 
-        // Cambia el color de la status bar (desde Lollipop+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(activity, colorRes));
-        }
 
-        // Asegura que los iconos sean oscuros si el fondo es claro (Android 11+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (colorRes == R.color.booka_primary) {
+                View decor = window.getDecorView();
+                decor.setSystemUiVisibility(0);
+            } else {
             WindowInsetsController insetsController = window.getInsetsController();
             if (insetsController != null) {
                 insetsController.setSystemBarsAppearance(
                         WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
                         WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
                 );
+            }
             }
         }
     }
