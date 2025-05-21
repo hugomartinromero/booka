@@ -1,5 +1,6 @@
 package com.fireboy.booka.model;
 
+import java.util.List;
 import java.util.Map;
 
 public class Business {
@@ -11,12 +12,13 @@ public class Business {
     private String owner;
     private Map<String, DaySchedule> schedule;
     private float rating;
-    private String services;
+    private List<Service> services;
 
     public Business() {
     }
 
-    public Business(String id, String name, String category, String address, String img, String owner, Map<String, DaySchedule> schedule, float rating, String services) {
+    public Business(String id, String name, String category, String address, String img, String owner,
+                    Map<String, DaySchedule> schedule, float rating, List<Service> services) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -92,11 +94,11 @@ public class Business {
         this.rating = rating;
     }
 
-    public String getServices() {
+    public List<Service> getServices() {
         return services;
     }
 
-    public void setServices(String services) {
+    public void setServices(List<Service> services) {
         this.services = services;
     }
 }

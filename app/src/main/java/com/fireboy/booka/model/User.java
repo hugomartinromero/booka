@@ -4,17 +4,17 @@ public class User {
     private String id;
     private String email;
     private String username;
-    private String rol;
+    private String role;
     private String img;
 
     public User() {
     }
 
-    public User(String id, String email, String username, String rol, String img) {
+    public User(String id, String email, String username, String role, String img) {
         this.id = id;
         this.email = email;
         this.username = username;
-        this.rol = rol;
+        this.role = role;
         this.img = img;
     }
 
@@ -42,12 +42,12 @@ public class User {
         this.username = username;
     }
 
-    public String getRol() {
-        return rol;
+    public String getRole() {
+        return role;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getImg() {

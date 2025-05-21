@@ -18,12 +18,12 @@ import java.util.List;
 
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.ViewHolder> {
     private List<Business> dataset;
-    private String categoria;
+    private final String CATEGORY;
     private Context context;
 
-    public BusinessAdapter(List<Business> dataset, String categoria) {
+    public BusinessAdapter(List<Business> dataset, String category) {
         this.dataset = dataset;
-        this.categoria = categoria;
+        this.CATEGORY = category;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.ViewHo
     public void onBindViewHolder(@NonNull BusinessAdapter.ViewHolder holder, int position) {
         Business business = dataset.get(position);
 
-        if (categoria.equals(business.getCategory())) {
+        if (CATEGORY.equals(business.getCategory())) {
             Glide.with(context)
                     .load(business.getImg())
                     .centerCrop()

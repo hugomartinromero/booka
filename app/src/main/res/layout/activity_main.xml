@@ -23,14 +23,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
             android:background="@drawable/rounded_background"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_bold"
             android:hint="Buscar"
             android:inputType="text|textAutoComplete"
             android:padding="12dp"
             android:paddingStart="55dp"
             android:textColor="@color/booka_primary"
             android:textColorHint="@color/booka_secondary"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +44,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txtBuscar"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/pin_icon" />
+            app:srcCompat="@drawable/ic_selected_location_pin" />
 
         <ImageView
             android:id="@+id/settingsIcon"
@@ -56,7 +55,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/settings_icon" />
+            app:srcCompat="@drawable/ic_settings" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -68,4 +67,77 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottomMenu"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@color/booka_input_background"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:weightSum="3">
+
+            <!-- Opción 1 -->
+            <FrameLayout
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_nav_selected"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/icon_home"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_location_pin" />
+            </FrameLayout>
+
+            <!-- Opción 2 -->
+            <FrameLayout
+                android:id="@+id/nav_bookmarks"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/icon_bookmark"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/nav_icon_bookmark" />
+            </FrameLayout>
+
+            <!-- Opción 3 -->
+            <FrameLayout
+                android:id="@+id/nav_profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/icon_profile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/nav_icon_profile" />
+            </FrameLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

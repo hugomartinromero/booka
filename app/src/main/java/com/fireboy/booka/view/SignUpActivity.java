@@ -16,8 +16,8 @@ import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText txtName, txtEmail, txtPassword, txtConfirmPassword;
-    private TextView lblLogIn;
     private MaterialButton btnSignUp;
+
     private AuthController authController;
     private UserController userController;
 
@@ -32,8 +32,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         authController = new AuthController(this);
         userController = new UserController();
-
-        lblLogIn.setOnClickListener(v -> UiExtensions.navigateTo(this, LoginActivity.class, true));
 
         btnSignUp.setOnClickListener(v -> registerUser());
     }

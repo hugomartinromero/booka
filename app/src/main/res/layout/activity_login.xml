@@ -53,10 +53,9 @@
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_bold"
             android:singleLine="true"
-            android:textColor="@color/booka_secondary"
-            android:textStyle="bold" />
+            android:textColor="@color/booka_secondary" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,12 +86,11 @@
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_bold"
             android:password="true"
             android:singleLine="true"
             android:textColor="@color/booka_secondary"
-            android:textColorHint="@color/booka_secondary"
-            android:textStyle="bold" />
+            android:textColorHint="@color/booka_secondary" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,11 +99,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:text="@string/has_olvidado_la_contrase_a"
         android:textColor="@color/booka_secondary"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/txtPasswordContainer"
         app:layout_constraintStart_toStartOf="@+id/txtPasswordContainer"
         app:layout_constraintTop_toBottomOf="@+id/txtPasswordContainer" />
@@ -125,14 +122,13 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/montserrat_bold"
         android:text="@string/conectar_con_google"
         android:textColor="@color/booka_secondary"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/booka_input_background"
+        app:backgroundTint="@color/booka_background"
         app:elevation="10dp"
-        app:icon="@drawable/google_icon"
+        app:icon="@drawable/ic_google"
         app:iconGravity="textStart"
         app:iconSize="20dp"
         app:iconTint="@null"
@@ -147,11 +143,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:text="@string/no_tienes_cuenta_reg_strate"
         android:textColor="@color/booka_secondary"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/btnGoogle"
         app:layout_constraintStart_toStartOf="@+id/btnGoogle"
         app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
@@ -161,10 +156,9 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginBottom="30dp"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/montserrat_bold"
         android:text="@string/iniciar_sesi_n"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:iconGravity="textStart"
         app:iconSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
