@@ -41,6 +41,7 @@ dependencies {
     implementation (libs.play.services.auth)
     implementation (libs.material)
     implementation (libs.github.glide)
+    implementation (libs.play.services.auth.v2070)
 
     implementation(libs.appcompat)
     implementation(libs.material)

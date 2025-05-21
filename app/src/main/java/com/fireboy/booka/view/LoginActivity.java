@@ -46,8 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         userController = new UserController();
 
         // Navegación entre pantallas
-        lblForgottenPassword.setOnClickListener(v -> UiExtensions.navigateTo(this, RestorePasswordActivity.class));
-        lblSignUp.setOnClickListener(v -> UiExtensions.navigateTo(this, SignUpActivity.class));
+        lblForgottenPassword.setOnClickListener(v -> UiExtensions.navigateTo(this, RestorePasswordActivity.class, false));
+        lblSignUp.setOnClickListener(v -> UiExtensions.navigateTo(this, SignUpActivity.class, false));
 
         // Configurar Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();

@@ -1,32 +1,36 @@
 package com.fireboy.booka.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
+import com.fireboy.booka.controller.CategoryController;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView rvCategory;
+
+    CategoryController categoryController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-            UiExtensions.changeStatusBarColor(this, R.color.booka_primary);
+        UiExtensions.changeStatusBarColor(this, R.color.booka_primary);
 
-            initComponents();
+        initComponents();
 
+        categoryController.getActiveCategories(categorias -> {
+            rvCategory.setLayoutManager(new LinearLayoutManager(this));
+            rvCategory.setAdapter(new CategoryAdapter(categorias));
+        });
     }
 
     private void initComponents() {
         rvCategory = findViewById(R.id.rvCategory);
+        categoryController = new CategoryController();
     }
 }
