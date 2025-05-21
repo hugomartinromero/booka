@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,10 +18,12 @@ import java.util.List;
 
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.ViewHolder> {
     private List<Business> dataset;
+    private String categoria;
     private Context context;
 
-    public BusinessAdapter(List<Business> dataset) {
+    public BusinessAdapter(List<Business> dataset, String categoria) {
         this.dataset = dataset;
+        this.categoria = categoria;
     }
 
     @NonNull
@@ -35,13 +36,17 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull BusinessAdapter.ViewHolder holder, int position) {
-        Glide.with(context)
-                .load(dataset.get(position).getImg())
-                .centerCrop()
-                .into(holder.imgBusiness);
-        holder.lblBusinessName.setText(dataset.get(position).getName());
-        holder.lblBusinessAddress.setText(dataset.get(position).getAddress());
-        holder.lblRating.setText(String.valueOf(dataset.get(position).getRating()));
+        Business business = dataset.get(position);
+
+        if (categoria.equals(business.getCategory())) {
+            Glide.with(context)
+                    .load(business.getImg())
+                    .centerCrop()
+                    .into(holder.imgBusiness);
+            holder.lblBusinessName.setText(business.getName());
+            holder.lblBusinessAddress.setText(business.getAddress());
+            holder.lblRating.setText(String.valueOf(business.getRating()));
+        }
     }
 
     @Override

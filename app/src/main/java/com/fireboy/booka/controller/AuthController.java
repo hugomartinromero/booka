@@ -28,7 +28,7 @@ public class AuthController {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult ->
-                        UiExtensions.navigateTo(activity, MainActivity.class))
+                        UiExtensions.navigateTo(activity, MainActivity.class , true))
                 .addOnFailureListener(e ->
                         Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
@@ -44,6 +44,18 @@ public class AuthController {
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
+
+    public void registerWithEmail(String name, String email, String password, UserController userController) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        userController.saveNewUserToFirestore(user, name, activity);
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(activity, "Error al registrarse: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
     public void signOut() {

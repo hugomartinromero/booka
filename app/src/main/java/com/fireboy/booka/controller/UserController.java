@@ -26,8 +26,26 @@ public class UserController {
         db.collection("users").document(user.getUid())
                 .set(userData, SetOptions.merge())
                 .addOnSuccessListener(unused ->
-                        UiExtensions.navigateTo(activity, MainActivity.class))
+                        UiExtensions.navigateTo(activity, MainActivity.class, true))
                 .addOnFailureListener(e ->
                         Toast.makeText(activity, "Error al crear usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
+
+    public void saveNewUserToFirestore(FirebaseUser user, String name, Activity activity) {
+        Map<String, Object> usuario = new HashMap<>();
+        usuario.put("email", user.getEmail());
+        usuario.put("username", name);
+        usuario.put("rol", "usuario");
+        usuario.put("foto", "");
+
+        db.collection("users").document(user.getUid())
+                .set(usuario, SetOptions.merge())
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(activity, "Cuenta creada correctamente", Toast.LENGTH_SHORT).show();
+                    UiExtensions.navigateTo(activity, MainActivity.class, true);
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(activity, "Error al guardar usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
+
 }

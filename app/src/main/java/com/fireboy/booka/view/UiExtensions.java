@@ -15,10 +15,12 @@ import androidx.core.content.ContextCompat;
 
 public class UiExtensions {
 
-    public static void navigateTo(Activity activity, Class<?> destination) {
+    public static void navigateTo(Activity activity, Class<?> destination, boolean finish) {
         Intent intent = new Intent(activity, destination);
         activity.startActivity(intent);
-        activity.finish();
+        if (finish) {
+            activity.finish();
+        }
     }
 
     public static void showToast(Activity activity, String message) {

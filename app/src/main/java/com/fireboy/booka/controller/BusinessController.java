@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessController {
-
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public interface BusinessCallback {
@@ -20,7 +19,7 @@ public class BusinessController {
     }
 
     public void getAllBusinesses(BusinessCallback callback) {
-        db.collection("businesses")
+        db.collection("business")
                 .get()
                 .addOnSuccessListener(snapshot -> {
                     List<Business> list = new ArrayList<>();
@@ -36,7 +35,7 @@ public class BusinessController {
     }
 
     public void getBusinessById(String businessId, BusinessSingleCallback callback) {
-        db.collection("businesses").document(businessId)
+        db.collection("business").document(businessId)
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {

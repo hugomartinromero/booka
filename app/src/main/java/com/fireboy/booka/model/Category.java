@@ -1,15 +1,25 @@
 package com.fireboy.booka.model;
 
 public class Category {
+    private String id;
     private String name;
     private boolean active;
 
     public Category() {
     }
 
-    public Category(String name, boolean active) {
+    public Category(String id, String name, boolean active) {
+        this.id = id;
         this.name = name;
         this.active = active;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

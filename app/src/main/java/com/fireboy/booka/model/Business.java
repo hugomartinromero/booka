@@ -1,23 +1,22 @@
 package com.fireboy.booka.model;
 
-import java.util.List;
 import java.util.Map;
 
 public class Business {
     private String id;
     private String name;
-    private Category category;
+    private String category;
     private String address;
     private String img;
-    private User owner;
+    private String owner;
     private Map<String, DaySchedule> schedule;
     private float rating;
-    private List<Service> services;
+    private String services;
 
     public Business() {
     }
 
-    public Business(String id, String name, Category category, String address, String img, User owner, Map<String, DaySchedule> schedule, float rating, List<Service> services) {
+    public Business(String id, String name, String category, String address, String img, String owner, Map<String, DaySchedule> schedule, float rating, String services) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -45,11 +44,11 @@ public class Business {
         this.name = name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -69,11 +68,11 @@ public class Business {
         this.img = img;
     }
 
-    public User getOwner() {
+    public String getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(String owner) {
         this.owner = owner;
     }
 
@@ -93,11 +92,11 @@ public class Business {
         this.rating = rating;
     }
 
-    public List<Service> getServices() {
+    public String getServices() {
         return services;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(String services) {
         this.services = services;
     }
 }
