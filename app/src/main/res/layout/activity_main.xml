@@ -95,7 +95,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/bg_nav_selected"
                 android:gravity="center">
 
                 <ImageView
@@ -103,7 +102,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_location_pin" />
+                    android:src="@drawable/nav_icon_location_pin" />
             </FrameLayout>
 
             <!-- Opción 2 -->

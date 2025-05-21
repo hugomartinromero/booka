@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     CategoryController categoryController;
 
+    boolean isFirstRun = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
         rvCategory = findViewById(R.id.rvCategory);
         categoryController = new CategoryController();
 
-        findViewById(R.id.nav_home).setBackgroundResource(R.drawable.bg_nav_selected);
-        findViewById(R.id.nav_home).setSelected(true);
+        setActiveOption(R.id.nav_home);
     }
 
     private void setActiveOption(int idActivo) {
@@ -68,10 +69,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         for (FrameLayout option : options) {
-            option.setBackground(null);
             option.setSelected(false);
             if (option.getId() == idActivo) {
-                option.setBackgroundResource(R.drawable.bg_nav_selected);
                 option.setSelected(true);
             }
         }
