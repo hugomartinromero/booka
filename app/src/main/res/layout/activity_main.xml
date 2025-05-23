@@ -22,7 +22,7 @@
             android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
-            android:background="@drawable/rounded_background"
+            android:background="@drawable/rounded_background_25"
             android:fontFamily="@font/montserrat_bold"
             android:hint="Buscar"
             android:inputType="text|textAutoComplete"
@@ -58,14 +58,15 @@
             app:srcCompat="@drawable/ic_settings" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCategory"
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottomMenu"
@@ -95,7 +96,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/bg_nav_selected"
                 android:gravity="center">
 
                 <ImageView
@@ -103,7 +103,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_location_pin" />
+                    android:src="@drawable/nav_icon_location_pin" />
             </FrameLayout>
 
             <!-- Opción 2 -->

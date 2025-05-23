@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class AuthController {
-
     private final FirebaseAuth mAuth;
     private final Activity activity;
 

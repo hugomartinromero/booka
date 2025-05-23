@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Inicializar controladores
         authController = new AuthController(this);
-        userController = new UserController();
+        userController = new UserController(this);
 
         // Navegación entre pantallas
         lblForgottenPassword.setOnClickListener(v -> UiExtensions.navigateTo(this, RestorePasswordActivity.class, false));

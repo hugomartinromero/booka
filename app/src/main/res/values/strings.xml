@@ -13,4 +13,8 @@
     <string name="buscar">Buscar</string>
     <string name="_4_5">4.5</string>
     <string name="textview">TextView</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rese_as">Reseñas</string>
+    <string name="username">username</string>
 </resources>
