@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Contenido principal oculto inicialmente -->
     <LinearLayout
         android:id="@+id/homeContent"
         android:layout_width="match_parent"

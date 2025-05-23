@@ -8,10 +8,14 @@ import android.view.Window;
 import android.view.WindowInsetsController;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.fireboy.booka.R;
+import com.google.firebase.Timestamp;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class UiExtensions {
     public static void navigateTo(Activity activity, Class<?> destination, boolean finish) {
@@ -45,5 +49,12 @@ public class UiExtensions {
             }
             }
         }
+    }
+
+    public static String formatFirebaseTimestamp(Timestamp timestamp) {
+        if (timestamp == null) return "";
+        Date date = timestamp.toDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        return sdf.format(date);
     }
 }
