@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.CategoryController;
+import com.fireboy.booka.utils.BottomPaddingDecoration;
 import com.fireboy.booka.utils.VerticalSpacingDecoration;
 
 public class HomeFragment extends Fragment {
@@ -33,18 +34,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initComponents(view);
+        initRecyclerView();
 
         categoryController.getActiveCategories(categorias -> {
-            int spacing = (int) (this.getResources().getDisplayMetrics().density * 30); // 30dp
-
-            if (rvCategory.getItemDecorationCount() == 0) {
-                rvCategory.addItemDecoration(new VerticalSpacingDecoration(spacing));
-            }
-
-            rvCategory.setLayoutManager(new LinearLayoutManager(requireContext()));
             rvCategory.setAdapter(new CategoryAdapter(categorias));
-
             progressLoader.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
         });
@@ -57,4 +52,17 @@ public class HomeFragment extends Fragment {
 
         categoryController = new CategoryController();
     }
+
+    private void initRecyclerView() {
+        int spacing = (int) (this.getResources().getDisplayMetrics().density * 30); // 30dp
+        int extraBottom = (int) (getResources().getDisplayMetrics().density * 60);  // 60dp
+
+        if (rvCategory.getItemDecorationCount() == 0) {
+            rvCategory.addItemDecoration(new VerticalSpacingDecoration(spacing));
+            rvCategory.addItemDecoration(new BottomPaddingDecoration(extraBottom));
+        }
+
+        rvCategory.setLayoutManager(new LinearLayoutManager(requireContext()));
+    }
+
 }

@@ -31,7 +31,7 @@ public class SignUpActivity extends AppCompatActivity {
         initComponents();
 
         authController = new AuthController(this);
-        userController = new UserController();
+        userController = new UserController(this);
 
         btnSignUp.setOnClickListener(v -> registerUser());
     }
