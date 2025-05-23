@@ -4,19 +4,13 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.fireboy.booka.R;
-import com.fireboy.booka.controller.CategoryController;
-import com.fireboy.booka.utils.VerticalSpacingDecoration;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView rvCategory;
-
-    CategoryController categoryController;
-
-    boolean isFirstRun = true;
+    FrameLayout[] bottomMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,45 +24,32 @@ public class MainActivity extends AppCompatActivity {
 //            UiExtensions.navigateTo(this, LoginActivity.class, true);
 //        }
 
-        categoryController.getActiveCategories(categorias -> {
-            int spacing = (int) (this.getResources().getDisplayMetrics().density * 30); // 30dp
+        bottomMenu[0].setOnClickListener(v -> loadFragment(new HomeFragment(), R.id.nav_home));
 
-            if (rvCategory.getItemDecorationCount() == 0) {
-                rvCategory.addItemDecoration(new VerticalSpacingDecoration(spacing));
-            }
+        bottomMenu[1].setOnClickListener(v -> loadFragment(new MyBookingFragment(), R.id.nav_bookmarks));
 
-            rvCategory.setLayoutManager(new LinearLayoutManager(this));
-            rvCategory.setAdapter(new CategoryAdapter(categorias));
-        });
-        
-        findViewById(R.id.nav_home).setOnClickListener(v -> {
-            setActiveOption(R.id.nav_home);
-        });
-
-        findViewById(R.id.nav_bookmarks).setOnClickListener(v -> {
-            setActiveOption(R.id.nav_bookmarks);
-        });
-
-        findViewById(R.id.nav_profile).setOnClickListener(v -> {
-            setActiveOption(R.id.nav_profile);
-        });
+        bottomMenu[2].setOnClickListener(v -> loadFragment(new ProfileFragment(), R.id.nav_profile));
     }
 
     private void initComponents() {
-        rvCategory = findViewById(R.id.rvCategory);
-        categoryController = new CategoryController();
-
-        setActiveOption(R.id.nav_home);
-    }
-
-    private void setActiveOption(int idActivo) {
-        FrameLayout[] options = {
+        bottomMenu = new FrameLayout[]{
                 findViewById(R.id.nav_home),
                 findViewById(R.id.nav_bookmarks),
                 findViewById(R.id.nav_profile)
         };
 
-        for (FrameLayout option : options) {
+        loadFragment(new HomeFragment(), bottomMenu[0].getId());
+    }
+
+    private void loadFragment(Fragment fragment, int idMenu) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment).commit();
+
+        setActiveOption(idMenu);
+    }
+
+    private void setActiveOption(int idActivo) {
+        for (FrameLayout option : bottomMenu) {
             option.setSelected(false);
             if (option.getId() == idActivo) {
                 option.setSelected(true);
