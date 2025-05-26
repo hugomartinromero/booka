@@ -1,34 +1,57 @@
 package com.fireboy.booka.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fireboy.booka.R;
+import com.fireboy.booka.controller.AuthController;
+import com.fireboy.booka.utils.SettingsUtils;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout[] bottomMenu;
+    ImageView imgSettings;
+
+    AuthController authController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (SettingsUtils.isDarkModeEnabled(this)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
+
+        authController = new AuthController(this);
+
+        if (authController.getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
 
         UiExtensions.changeStatusBarColor(this, R.color.booka_primary);
         initComponents();
-
-//        if (Si no hay iniciada sesión, te lleva a logearte (Con SharedPreferences)) {
-//            UiExtensions.navigateTo(this, LoginActivity.class, true);
-//        }
 
         bottomMenu[0].setOnClickListener(v -> loadFragment(new HomeFragment(), R.id.nav_home));
 
         bottomMenu[1].setOnClickListener(v -> loadFragment(new MyBookingFragment(), R.id.nav_bookmarks));
 
         bottomMenu[2].setOnClickListener(v -> loadFragment(new ProfileFragment(), R.id.nav_profile));
+
+        imgSettings.setOnClickListener(v -> UiExtensions.navigateTo(this, SettingsActivity.class, false));
     }
 
     private void initComponents() {
@@ -37,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.nav_bookmarks),
                 findViewById(R.id.nav_profile)
         };
+        imgSettings = findViewById(R.id.settingsIcon);
 
         loadFragment(new HomeFragment(), bottomMenu[0].getId());
     }

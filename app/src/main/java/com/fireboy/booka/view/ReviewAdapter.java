@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
-import com.fireboy.booka.controller.UserController;
+import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.model.Review;
 
 import java.util.List;
@@ -36,14 +36,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder holder, int position) {
-        UserController userController = new UserController(activity);
+        BusinessController businessController = new BusinessController();
         Review review = dataset.get(position);
 
-        userController.getUserById("0q0qe1eFcBP1yJc9gYrER2yxhzp2",
-                user -> {
-                    holder.lblUser.setText(user.getUsername());
+        businessController.getBusinessById(review.getBusinessId(),
+                business -> {
+                    holder.lblUser.setText(business.getName());
                 });
-
+        
         holder.lblDate.setText(UiExtensions.formatFirebaseTimestamp(review.getTimestamp()));
         holder.lblRating.setText(String.valueOf(review.getRating()));
         holder.lblMessage.setText(review.getComment());

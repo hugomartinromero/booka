@@ -5,7 +5,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.fireboy.booka.R;
 import com.fireboy.booka.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,10 +31,9 @@ public class UserController {
         docRef.get().addOnSuccessListener(document -> {
             if (!document.exists()) {
                 User user = new User(
-                        uid,
                         firebaseUser.getEmail(),
                         firebaseUser.getDisplayName() != null ? firebaseUser.getDisplayName() : "Usuario",
-                        "cliente",
+                        "usuario",
                         firebaseUser.getPhotoUrl() != null ? firebaseUser.getPhotoUrl().toString() : ""
                 );
 
@@ -49,11 +50,10 @@ public class UserController {
         String uid = firebaseUser.getUid();
 
         User user = new User(
-                uid,
                 firebaseUser.getEmail(),
                 username,
-                "cliente", //
-                "" //
+                "usuario",
+                activity.getString(R.string.default_pic_link)
         );
 
         db.collection("users").document(uid)
@@ -82,4 +82,17 @@ public class UserController {
                 .addOnFailureListener(e ->
                         Toast.makeText(activity, "Error al obtener el usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
+
+    public void updateUsernameInFirestore(String newName) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(uid)
+                .update("username", newName.trim())
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(activity, "Nombre actualizado", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(activity, "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
 }
