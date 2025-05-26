@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/booka_primary"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="-25dp"
             android:background="@color/booka_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,6 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
             android:background="@drawable/rounded_background_55"
             android:backgroundTint="@color/booka_primary"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,12 +73,13 @@
         <TextView
             android:id="@+id/lblUserName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/rounded_background_25"
             android:backgroundTint="@color/booka_background"
             android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_vertical"
             android:paddingHorizontal="55dp"
             android:paddingVertical="15dp"
             android:text="@string/username"
@@ -92,7 +92,6 @@
             app:layout_constraintTop_toTopOf="@+id/ImgContainer" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Indicador de carga -->
     <ProgressBar
         android:id="@+id/progressLoader3"
         android:layout_width="wrap_content"

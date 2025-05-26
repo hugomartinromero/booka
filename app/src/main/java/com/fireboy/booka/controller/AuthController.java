@@ -3,7 +3,7 @@ package com.fireboy.booka.controller;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.fireboy.booka.view.LoginActivity;
+import com.fireboy.booka.view.MainActivity;
 import com.fireboy.booka.view.UiExtensions;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +27,7 @@ public class AuthController {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult ->
-                        UiExtensions.navigateTo(activity, LoginActivity.class , true))
+                        UiExtensions.navigateTo(activity, MainActivity.class , true))
                 .addOnFailureListener(e ->
                         Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
@@ -40,6 +40,7 @@ public class AuthController {
                     if (user != null) {
                         userController.saveUserToFirestore(user, activity);
                     }
+                    UiExtensions.navigateTo(activity, MainActivity.class , true);
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());

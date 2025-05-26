@@ -41,31 +41,25 @@ public class LoginActivity extends AppCompatActivity {
         UiExtensions.changeStatusBarColor(this, R.color.booka_background);
         initComponents();
 
-        // Inicializar controladores
         authController = new AuthController(this);
         userController = new UserController(this);
 
-        // Navegación entre pantallas
         lblForgottenPassword.setOnClickListener(v -> UiExtensions.navigateTo(this, RestorePasswordActivity.class, false));
         lblSignUp.setOnClickListener(v -> UiExtensions.navigateTo(this, SignUpActivity.class, false));
 
-        // Configurar Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Acciones de botones
         btnGoogle.setOnClickListener(v -> launchGoogleSignIn());
         btnLogIn.setOnClickListener(v -> authController.signInWithEmail(Objects.requireNonNull(txtEmail.getText()).toString().trim(), Objects.requireNonNull(txtPassword.getText()).toString().trim()));
     }
 
-    // Lanzar login de Google
     private void launchGoogleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    // Resultado del intent de login con Google
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

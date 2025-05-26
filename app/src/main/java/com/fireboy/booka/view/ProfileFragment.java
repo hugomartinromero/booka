@@ -50,8 +50,8 @@ public class ProfileFragment extends Fragment {
 
         userController.getUserById(authController.getCurrentUser().getUid(), user -> {
             Glide.with(requireContext())
-                    .load(user.getImg())
-                    .centerCrop()
+                    .load(user.getPhoto())
+                    .circleCrop()
                     .into(imgProfile);
             lblUserName.setText(user.getUsername());
         });
