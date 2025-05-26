@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 
 public class SettingsUtils {
     private static SharedPreferences getPrefs(Context context) {
@@ -15,7 +17,11 @@ public class SettingsUtils {
     }
 
     public static void setDarkMode(Context context, boolean enabled) {
-        getPrefs(context).edit().putBoolean("dark_mode", enabled).apply();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putBoolean("dark_mode", enabled);
+        editor.apply();
+        AppCompatDelegate.setDefaultNightMode(enabled ?
+                AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     public static String getCurrentLanguage(Context context) {

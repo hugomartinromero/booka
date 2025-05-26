@@ -30,9 +30,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         authController = new AuthController(this);
 
+        items[0].setOnClickListener(v -> UiExtensions.navigateTo(this, ProfileSettingsActivity.class, false));
+
         swDarkMode.setChecked(SettingsUtils.isDarkModeEnabled(this));
         swDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SettingsUtils.setDarkMode(this, isChecked);
+            recreate();
         });
 
         lblLogout.setOnClickListener(v -> {

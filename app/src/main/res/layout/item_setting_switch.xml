@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_bold"
         android:text="@string/modo_oscuro"
-        android:textColor="@android:color/black"
+        android:textColor="@color/booka_text_primary"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

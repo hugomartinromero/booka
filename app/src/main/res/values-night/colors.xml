@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores Booka -->
+    <color name="booka_primary">#2d2547</color>
+    <color name="booka_primary_variant">#2d1547</color>
+    <color name="booka_secondary">#515E6B</color>
+
+    <color name="booka_background">#2b2d30</color>
+
+    <color name="booka_text_primary">#fafafa</color>
+    <color name="booka_text_secondary">#bbbbbb</color>
+
+    <color name="white">#FFFFFF</color>
+</resources>

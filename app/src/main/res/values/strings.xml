@@ -22,4 +22,5 @@
     <string name="t_tulo">Título</string>
     <string name="modo_oscuro">Modo oscuro</string>
     <string name="default_pic_link"><![CDATA[https://firebasestorage.googleapis.com/v0/b/booka-hg.firebasestorage.app/o/default-pic.png?alt=media&token=473bcf95-1b59-4711-af03-147ef9d27e51]]></string>
+    <string name="detalles_de_la_cuenta">Detalles de la cuenta</string>
 </resources>
