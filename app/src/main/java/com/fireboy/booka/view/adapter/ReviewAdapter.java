@@ -14,7 +14,7 @@ import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.controller.UserController;
 import com.fireboy.booka.model.Review;
-import com.fireboy.booka.view.UiExtensions;
+import com.fireboy.booka.utils.FormatUtils;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             });
         }
         
-        holder.lblDate.setText(UiExtensions.formatFirebaseTimestamp(review.getTimestamp()));
+        holder.lblDate.setText(FormatUtils.formatFirebaseTimestamp(review.getTimestamp()));
         holder.lblRating.setText(String.valueOf(review.getRating()));
         holder.lblMessage.setText(review.getComment());
     }

@@ -55,8 +55,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 holder.rvBusiness.setAdapter(new BusinessAdapter(negocios, category.getName(), ACTIVITY));
             });
         }
-
-        // holder.rvBusiness.setOnClickListener(v -> UiExtensions.navigateTo(context, InfoActivity.class, true));
     }
 
     @Override

@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide;
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.controller.ReviewController;
+import com.fireboy.booka.utils.BottomPaddingDecoration;
 import com.fireboy.booka.view.adapter.ReviewAdapter;
+import com.fireboy.booka.view.adapter.ServiceAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class InfoActivity extends AppCompatActivity {
@@ -38,11 +40,20 @@ public class InfoActivity extends AppCompatActivity {
             lblBusinessAddress.setText(business.getAddress());
             lblRating.setText(String.valueOf(business.getRating()));
 
+            rvServices.setLayoutManager(new LinearLayoutManager(this));
+            rvServices.setAdapter(new ServiceAdapter(business.getServices(), this));
+
             ReviewController reviewController = new ReviewController(this);
             reviewController.getReviewsByBusinessId(business.getId(), reviews -> {
                 if (reviews.isEmpty()) {
                     txtEmptyReviews.setVisibility(View.VISIBLE);
                 } else {
+                    int extraBottom = (int) (getResources().getDisplayMetrics().density * 66);  // 66dp
+
+                    if (rvReviewsInfo.getItemDecorationCount() == 0) {
+                        rvReviewsInfo.addItemDecoration(new BottomPaddingDecoration(extraBottom));
+                    }
+
                     rvReviewsInfo.setLayoutManager(new LinearLayoutManager(this));
                     rvReviewsInfo.setAdapter(new ReviewAdapter(reviews, this, false));
                 }
