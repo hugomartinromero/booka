@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.AuthController;
 import com.fireboy.booka.controller.UserController;
+import com.fireboy.booka.view.UiExtensions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

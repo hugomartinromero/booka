@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/booka_primary"
-    tools:context=".view.InfoActivity">
+    tools:context=".view.activity.InfoActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgBusinessInfo"

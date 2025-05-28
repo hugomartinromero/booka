@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.fragment;
 
 import android.os.Bundle;
 

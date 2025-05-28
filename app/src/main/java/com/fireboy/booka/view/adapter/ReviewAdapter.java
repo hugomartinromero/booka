@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.controller.UserController;
 import com.fireboy.booka.model.Review;
+import com.fireboy.booka.view.UiExtensions;
 
 import java.util.List;
 

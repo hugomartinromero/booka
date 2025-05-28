@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.controller.ReviewController;
+import com.fireboy.booka.view.adapter.ReviewAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class InfoActivity extends AppCompatActivity {

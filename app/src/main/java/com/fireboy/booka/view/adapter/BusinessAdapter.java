@@ -1,6 +1,4 @@
-package com.fireboy.booka.view;
-
-import static androidx.core.content.ContextCompat.startActivity;
+package com.fireboy.booka.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fireboy.booka.R;
 import com.fireboy.booka.model.Business;
+import com.fireboy.booka.view.activity.InfoActivity;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;

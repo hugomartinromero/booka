@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +19,7 @@ import com.fireboy.booka.controller.ReviewController;
 import com.fireboy.booka.controller.UserController;
 import com.fireboy.booka.utils.BottomPaddingDecoration;
 import com.fireboy.booka.utils.VerticalSpacingDecoration;
+import com.fireboy.booka.view.adapter.ReviewAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class ProfileFragment extends Fragment {

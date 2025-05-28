@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.activity;
 
 import android.os.Bundle;
 import android.view.inputmethod.EditorInfo;
@@ -9,8 +9,6 @@ import com.fireboy.booka.R;
 import com.fireboy.booka.controller.AuthController;
 import com.fireboy.booka.controller.UserController;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     TextInputEditText txtUsername, txtEmail;
