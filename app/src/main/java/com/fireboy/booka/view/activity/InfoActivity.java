@@ -1,7 +1,9 @@
 package com.fireboy.booka.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.controller.ReviewController;
 import com.fireboy.booka.utils.BottomPaddingDecoration;
+import com.fireboy.booka.view.UiExtensions;
 import com.fireboy.booka.view.adapter.ReviewAdapter;
 import com.fireboy.booka.view.adapter.ServiceAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -21,6 +24,7 @@ public class InfoActivity extends AppCompatActivity {
     ShapeableImageView imgBusiness;
     TextView lblBusinessName, lblBusinessAddress, lblRating, txtEmptyReviews;;
     RecyclerView rvServices, rvReviewsInfo;
+    Button btnBooking;
 
     BusinessController businessController;
 
@@ -30,6 +34,12 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         initComponents();
+
+        btnBooking.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BookingActivity.class);
+            intent.putExtra("businessId", getIntent().getStringExtra("businessId"));
+            this.startActivity(intent);
+        });
 
         businessController.getBusinessById(getIntent().getStringExtra("businessId"), business -> {
             Glide.with(this)
@@ -41,7 +51,7 @@ public class InfoActivity extends AppCompatActivity {
             lblRating.setText(String.valueOf(business.getRating()));
 
             rvServices.setLayoutManager(new LinearLayoutManager(this));
-            rvServices.setAdapter(new ServiceAdapter(business.getServices(), this));
+            rvServices.setAdapter(new ServiceAdapter(business.getServices(), this, false));
 
             ReviewController reviewController = new ReviewController(this);
             reviewController.getReviewsByBusinessId(business.getId(), reviews -> {
@@ -69,6 +79,7 @@ public class InfoActivity extends AppCompatActivity {
         txtEmptyReviews = findViewById(R.id.txtEmptyReviews);
         rvServices = findViewById(R.id.rvServices);
         rvReviewsInfo = findViewById(R.id.rvReviewsInfo);
+        btnBooking = findViewById(R.id.btnBooking);
 
         businessController = new BusinessController();
     }

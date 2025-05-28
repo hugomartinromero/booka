@@ -26,4 +26,6 @@
     <string name="servicios">Servicios</string>
     <string name="no_hay_rese_as_a_n">No hay reseñas aún</string>
     <string name="reservar">Reservar</string>
+    <string name="fecha">Fecha</string>
+    <string name="horarios_disponibles">Horarios disponibles</string>
 </resources>

@@ -20,48 +20,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblBooking">
 
-        <TextView
-            android:id="@+id/lblAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_background_all_25"
-            android:backgroundTint="@color/booka_background"
-            android:fontFamily="@font/montserrat_bold"
-            android:gravity="center_vertical"
-            android:text="@string/detalles_de_la_cuenta"
-            android:textColor="@color/booka_text_primary"
-            android:textSize="18sp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvServices"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtUsernameContainer"
+            android:id="@+id/txtDatePicker"
             style="@style/Widget.Booka.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="12dp"
             android:backgroundTint="@color/booka_input_background"
             android:elevation="10dp"
-            android:hint="@string/nombre"
+            android:hint="@string/fecha"
             android:textColorHint="@color/booka_text_primary"
             app:boxBackgroundMode="outline"
-            app:boxCornerRadiusBottomEnd="25dp"
-            app:boxCornerRadiusBottomStart="25dp"
-            app:boxCornerRadiusTopEnd="25dp"
-            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusBottomEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusTopStart="30dp"
             app:boxStrokeColor="@color/booka_primary"
             app:boxStrokeWidth="1dp"
             app:expandedHintEnabled="false"
             app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rvServices"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/lblAccount"
-            app:layout_constraintTop_toBottomOf="@+id/lblAccount">
+            app:layout_constraintStart_toStartOf="@+id/rvServices"
+            app:layout_constraintTop_toBottomOf="@+id/rvServices">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtUsername"
+                android:id="@+id/txtDatePicker2"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
+                android:clickable="true"
+                android:focusable="false"
                 android:fontFamily="@font/montserrat_bold"
                 android:singleLine="true"
                 android:textColor="@color/booka_secondary" />
@@ -69,38 +67,42 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtEmailContainer2"
+            android:id="@+id/txtSchedule"
             style="@style/Widget.Booka.TextInput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
             android:backgroundTint="@color/booka_input_background"
-            android:hint="@string/correo_electronico"
+            android:hint="@string/horarios_disponibles"
             android:textColorHint="@color/booka_text_primary"
             app:boxBackgroundMode="outline"
-            app:boxCornerRadiusBottomEnd="25dp"
-            app:boxCornerRadiusBottomStart="25dp"
-            app:boxCornerRadiusTopEnd="25dp"
-            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusBottomEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusTopStart="30dp"
             app:boxStrokeColor="@color/booka_primary"
             app:boxStrokeWidth="1dp"
             app:expandedHintEnabled="false"
             app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="@id/txtUsernameContainer"
-            app:layout_constraintStart_toStartOf="@id/txtUsernameContainer"
-            app:layout_constraintTop_toBottomOf="@id/txtUsernameContainer">
+            app:layout_constraintEnd_toEndOf="@+id/txtDatePicker"
+            app:layout_constraintStart_toStartOf="@+id/txtDatePicker"
+            app:layout_constraintTop_toBottomOf="@+id/txtDatePicker">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtEmail2"
+            <AutoCompleteTextView
+                android:id="@+id/spinnerSchedule"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:enabled="false"
+                android:layout_height="55dp"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:focusable="true"
                 android:fontFamily="@font/montserrat_bold"
-                android:singleLine="true"
+                android:inputType="none"
+                android:paddingLeft="15dp"
                 android:textColor="@color/booka_secondary"
                 android:textColorHint="@color/booka_secondary" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -116,7 +118,7 @@
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center_vertical"
         android:paddingHorizontal="55dp"
-        android:text="@string/configuraci_n"
+        android:text="@string/textview"
         android:textAlignment="center"
         android:textColor="@color/booka_text_primary"
         android:textSize="20sp"

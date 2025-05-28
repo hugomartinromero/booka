@@ -108,8 +108,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintEnd_toEndOf="@id/line"
-                app:layout_constraintStart_toStartOf="@id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView2" />
 
             <View
@@ -158,7 +158,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogIn"
+        android:id="@+id/btnBooking"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
