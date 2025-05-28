@@ -1,8 +1,7 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -14,7 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.AuthController;
 import com.fireboy.booka.utils.SettingsUtils;
-import com.google.firebase.auth.FirebaseAuth;
+import com.fireboy.booka.view.fragment.MyBookingFragment;
+import com.fireboy.booka.view.fragment.ProfileFragment;
+import com.fireboy.booka.view.UiExtensions;
+import com.fireboy.booka.view.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout[] bottomMenu;

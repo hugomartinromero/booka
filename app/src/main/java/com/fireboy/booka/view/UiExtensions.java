@@ -50,11 +50,4 @@ public class UiExtensions {
             }
         }
     }
-
-    public static String formatFirebaseTimestamp(Timestamp timestamp) {
-        if (timestamp == null) return "";
-        Date date = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        return sdf.format(date);
-    }
 }

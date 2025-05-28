@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import com.fireboy.booka.R;
 import com.fireboy.booka.controller.CategoryController;
 import com.fireboy.booka.utils.BottomPaddingDecoration;
 import com.fireboy.booka.utils.VerticalSpacingDecoration;
+import com.fireboy.booka.view.adapter.CategoryAdapter;
 
 public class HomeFragment extends Fragment {
     RecyclerView rvCategory;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment {
         initRecyclerView();
 
         categoryController.getActiveCategories(categorias -> {
-            rvCategory.setAdapter(new CategoryAdapter(categorias));
+            rvCategory.setAdapter(new CategoryAdapter(categorias, requireActivity()));
             progressLoader.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
         });

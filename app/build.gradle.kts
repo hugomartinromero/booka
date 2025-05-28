@@ -36,12 +36,11 @@ android {
 dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
-    implementation (libs.material.v1110)
-    implementation (libs.firebase.auth)
-    implementation (libs.play.services.auth)
-    implementation (libs.material)
-    implementation (libs.github.glide)
-    implementation (libs.play.services.auth.v2070)
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
+    implementation(libs.material)
+    implementation(libs.github.glide)
+    annotationProcessor(libs.compiler)
 
     implementation(libs.appcompat)
     implementation(libs.material)

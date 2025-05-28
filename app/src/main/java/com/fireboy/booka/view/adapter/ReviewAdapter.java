@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,18 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
+import com.fireboy.booka.controller.UserController;
 import com.fireboy.booka.model.Review;
+import com.fireboy.booka.utils.FormatUtils;
 
 import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     private List<Review> dataset;
     private Context context;
-    private final Activity activity;
+    private final Activity ACTIVITY;
+    private boolean isProfileView;
 
-    public ReviewAdapter(List<Review> dataset, Activity activity) {
+    public ReviewAdapter(List<Review> dataset, Activity activity, boolean isProfileView) {
         this.dataset = dataset;
-        this.activity = activity;
+        this.ACTIVITY = activity;
+        this.isProfileView = isProfileView;
     }
 
     @NonNull
@@ -37,14 +41,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder holder, int position) {
         BusinessController businessController = new BusinessController();
+        UserController userController = new UserController(ACTIVITY);
         Review review = dataset.get(position);
 
-        businessController.getBusinessById(review.getBusinessId(),
-                business -> {
+        if (isProfileView) {
+            businessController.getBusinessById(review.getBusinessId(), business -> {
+                if (business != null) {
                     holder.lblUser.setText(business.getName());
-                });
+                }
+            });
+        } else {
+            userController.getUserById(review.getUserId(), user -> {
+                if (user != null) {
+                    holder.lblUser.setText(user.getUsername());
+                }
+            });
+        }
         
-        holder.lblDate.setText(UiExtensions.formatFirebaseTimestamp(review.getTimestamp()));
+        holder.lblDate.setText(FormatUtils.formatFirebaseTimestamp(review.getTimestamp()));
         holder.lblRating.setText(String.valueOf(review.getRating()));
         holder.lblMessage.setText(review.getComment());
     }

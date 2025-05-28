@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/booka_primary"
-    tools:context=".view.SettingsActivity">
+    tools:context=".view.activity.SettingsActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -59,7 +59,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
-        android:background="@drawable/rounded_background_25"
+        android:background="@drawable/rounded_background_all_25"
         android:backgroundTint="@color/booka_background"
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center_vertical"

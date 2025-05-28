@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.fireboy.booka.model.Review;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +40,21 @@ public class ReviewController {
     }
 
     public void getReviewsByBusinessId(@NonNull String businessId, @NonNull Consumer<List<Review>> onResult) {
+        if (businessId.trim().isEmpty()) {
+            Toast.makeText(activity, "ID del negocio no válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         db.collection("review")
                 .whereEqualTo("businessId", businessId)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(query -> {
                     List<Review> reviews = new ArrayList<>();
-                    query.forEach(doc -> {
-                        Review r = doc.toObject(Review.class);
-                        reviews.add(r);
-                    });
+                    for (QueryDocumentSnapshot doc : query) {
+                        Review review = doc.toObject(Review.class);
+                        reviews.add(review);
+                    }
                     onResult.accept(reviews);
                 })
                 .addOnFailureListener(e -> {

@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,10 +19,11 @@ import com.fireboy.booka.controller.ReviewController;
 import com.fireboy.booka.controller.UserController;
 import com.fireboy.booka.utils.BottomPaddingDecoration;
 import com.fireboy.booka.utils.VerticalSpacingDecoration;
+import com.fireboy.booka.view.adapter.ReviewAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class ProfileFragment extends Fragment {
-    TextView lblUserName;
+    TextView lblUserName, txtEmptyReviews;
     ShapeableImageView imgProfile;
     RecyclerView rvReview;
     View progressLoader;
@@ -57,7 +58,12 @@ public class ProfileFragment extends Fragment {
         });
 
         reviewController.getReviewsByUserId(authController.getCurrentUser().getUid(), reviews -> {
-            rvReview.setAdapter(new ReviewAdapter(reviews, requireActivity()));
+            if (reviews.isEmpty()) {
+                txtEmptyReviews.setVisibility(View.VISIBLE);
+            } else {
+                rvReview.setAdapter(new ReviewAdapter(reviews, requireActivity(), true));
+            }
+
             progressLoader.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
         });
@@ -65,6 +71,7 @@ public class ProfileFragment extends Fragment {
 
     private void initComponents(View view) {
         lblUserName = view.findViewById(R.id.lblUserName);
+        txtEmptyReviews = view.findViewById(R.id.txtEmptyReviews);
         imgProfile = view.findViewById(R.id.imgProfile);
         rvReview = view.findViewById(R.id.rvReviews);
         progressLoader = view.findViewById(R.id.progressLoader3);

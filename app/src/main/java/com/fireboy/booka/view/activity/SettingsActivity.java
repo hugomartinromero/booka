@@ -1,4 +1,4 @@
-package com.fireboy.booka.view;
+package com.fireboy.booka.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.AuthController;
 import com.fireboy.booka.utils.SettingsUtils;
+import com.fireboy.booka.view.UiExtensions;
 
 public class SettingsActivity extends AppCompatActivity {
     View[] items;

@@ -13,26 +13,31 @@
         android:theme="@style/Theme.Booka"
         tools:targetApi="31">
         <activity
-            android:name=".view.ProfileSettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.SettingsActivity"
+            android:name=".view.activity.InfoActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.SignUpActivity"
+            android:name=".view.activity.ProfileSettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.RestorePasswordActivity"
+            android:name=".view.activity.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.activity.SignUpActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.activity.RestorePasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
