@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
         initRecyclerView();
 
         categoryController.getActiveCategories(categorias -> {
-            rvCategory.setAdapter(new CategoryAdapter(categorias));
+            rvCategory.setAdapter(new CategoryAdapter(categorias, requireActivity()));
             progressLoader.setVisibility(View.GONE);
             homeContent.setVisibility(View.VISIBLE);
         });

@@ -1,5 +1,6 @@
 package com.fireboy.booka.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
-import com.fireboy.booka.model.Business;
 import com.fireboy.booka.model.Category;
 import com.fireboy.booka.utils.HorizontalSpacingDecoration;
 
@@ -22,9 +22,11 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private List<Category> dataset;
     private Context context;
+    private final Activity ACTIVITY;
 
-    public CategoryAdapter(List<Category> dataset) {
+    public CategoryAdapter(List<Category> dataset, Activity activity) {
         this.dataset = dataset;
+        this.ACTIVITY = activity;
     }
 
     @NonNull
@@ -51,7 +53,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             }
 
             businessController.getBusinessByCategory(category.getName(), negocios -> {
-                holder.rvBusiness.setAdapter(new BusinessAdapter(negocios, category.getName()));
+                holder.rvBusiness.setAdapter(new BusinessAdapter(negocios, category.getName(), ACTIVITY));
             });
         }
 

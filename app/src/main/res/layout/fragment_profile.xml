@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/booka_primary"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -44,6 +44,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lblReviews" />
+
+            <TextView
+                android:id="@+id/txtEmptyReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/no_hay_rese_as_a_n"
+                android:textColor="@color/booka_text_secondary"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/lblReviews"
+                app:layout_constraintTop_toBottomOf="@+id/lblReviews" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +65,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginStart="30dp"
-            android:background="@drawable/rounded_background_55"
+            android:background="@drawable/rounded_background_all_55"
             android:backgroundTint="@color/booka_primary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -76,7 +90,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/rounded_background_25"
+            android:background="@drawable/rounded_background_all_25"
             android:backgroundTint="@color/booka_background"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center_vertical"

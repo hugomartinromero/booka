@@ -22,7 +22,7 @@
             android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
-            android:background="@drawable/rounded_background_25"
+            android:background="@drawable/rounded_background_all_25"
             android:fontFamily="@font/montserrat_bold"
             android:hint="Buscar"
             android:inputType="text|textAutoComplete"
