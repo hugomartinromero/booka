@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.fireboy.booka" />
-                  <option name="mobileSdkAppId" value="1:801473124872:android:d48d8b82fb571ee7cf0fbd" />
-                  <option name="projectId" value="booka-hg" />
-                  <option name="projectNumber" value="801473124872" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

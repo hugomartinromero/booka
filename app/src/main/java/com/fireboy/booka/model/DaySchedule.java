@@ -1,30 +1,22 @@
 package com.fireboy.booka.model;
 
+import java.util.List;
+
 public class DaySchedule {
-    private String open;
-    private String close;
+    private List<String> available;
 
     public DaySchedule() {
     }
 
-    public DaySchedule(String open, String close) {
-        this.open = open;
-        this.close = close;
+    public DaySchedule(List<String> available) {
+        this.available = available;
     }
 
-    public String getOpen() {
-        return open;
+    public List<String> getAvailable() {
+        return available;
     }
 
-    public void setOpen(String open) {
-        this.open = open;
-    }
-
-    public String getClose() {
-        return close;
-    }
-
-    public void setClose(String close) {
-        this.close = close;
+    public void setAvailable(List<String> available) {
+        this.available = available;
     }
 }
