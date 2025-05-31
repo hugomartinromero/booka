@@ -18,11 +18,11 @@ import com.fireboy.booka.utils.FormatUtils;
 
 import java.util.List;
 
-
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
-    List<Service> dataset;
-    Context context;
+    private List<Service> dataset;
+    private Context context;
     private boolean isBookingView;
+    private int selectedPosition = -1;
 
     public ServiceAdapter(List<Service> dataset, Context context, boolean isBookingView) {
         this.dataset = dataset;
@@ -45,19 +45,30 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.lblName.setText(service.getName());
         holder.lblDuration.setText(String.format("%s min", service.getDuration()));
         holder.lblPrice.setText(String.format("%s €", FormatUtils.formatDouble(service.getPrice())));
+
         if (isBookingView) {
+            holder.bgService.setSelected(position == selectedPosition);
+
             holder.bgService.setOnClickListener(v -> {
-                if (holder.bgService.isSelected()) {
-                    holder.bgService.setBackground(null);
-                    holder.bgService.setSelected(false);
+                if (selectedPosition == holder.getAdapterPosition()) {
+                    selectedPosition = -1;
+                    notifyItemChanged(holder.getAdapterPosition());
                 } else {
-                    GradientDrawable background = new GradientDrawable();
-                    background.setColor(ContextCompat.getColor(context, R.color.booka_input_stroke));
-                    background.setCornerRadius(75);
-                    holder.bgService.setBackground(background);
-                    holder.bgService.setSelected(true);
+                    int oldPosition = selectedPosition;
+                    selectedPosition = holder.getAdapterPosition();
+                    notifyItemChanged(oldPosition);
+                    notifyItemChanged(selectedPosition);
                 }
             });
+
+            if (position == selectedPosition) {
+                GradientDrawable background = new GradientDrawable();
+                background.setColor(ContextCompat.getColor(context, R.color.booka_input_stroke));
+                background.setCornerRadius(75);
+                holder.bgService.setBackground(background);
+            } else {
+                holder.bgService.setBackground(null);
+            }
         }
     }
 
@@ -69,7 +80,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout bgService;
         TextView lblName, lblDuration, lblPrice;
-        boolean isSelected = false;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,5 +88,12 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             lblDuration = itemView.findViewById(R.id.lblServiceDuration);
             lblPrice = itemView.findViewById(R.id.lblServicePrice);
         }
+    }
+
+    public Service getSelectedService() {
+        if (selectedPosition >= 0 && selectedPosition < dataset.size()) {
+            return dataset.get(selectedPosition);
+        }
+        return null;
     }
 }

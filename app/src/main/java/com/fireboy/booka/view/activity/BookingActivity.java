@@ -12,8 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fireboy.booka.R;
+import com.fireboy.booka.controller.AuthController;
 import com.fireboy.booka.controller.BusinessController;
+import com.fireboy.booka.controller.ReservationController;
 import com.fireboy.booka.model.DaySchedule;
+import com.fireboy.booka.model.Reservation;
+import com.fireboy.booka.model.Service;
 import com.fireboy.booka.view.adapter.ServiceAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,14 +50,32 @@ public class BookingActivity extends AppCompatActivity {
         businessController.getBusinessById(getIntent().getStringExtra("businessId"), business -> {
             lblBooking.setText(business.getName());
 
+            ServiceAdapter sa = new ServiceAdapter(business.getServices(), this, true);
+
             rvServices.setLayoutManager(new LinearLayoutManager(this));
-            rvServices.setAdapter(new ServiceAdapter(business.getServices(), this, true));
+            rvServices.setAdapter(sa);
 
             txtDatePicker2.setOnClickListener(v -> showDatePicker(business.getSchedule()));
-        });
 
-        btnBooking.setOnClickListener(v -> {
-            
+            btnBooking.setOnClickListener(v -> {
+                ReservationController rc = new ReservationController(this);
+                AuthController ac = new AuthController(this);
+
+                Service selectedService = sa.getSelectedService();
+
+                if (selectedService == null) {
+                    Toast.makeText(this, "Por favor, selecciona un servicio.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Reservation reservation = new Reservation(ac.getCurrentUser().getUid(),
+                        business.getId(),
+                        selectedService.getName(),
+                        txtDatePicker2.getText().toString(),
+                        spSchedule.getText().toString());
+
+                rc.createReservation(reservation);
+            });
         });
     }
 
