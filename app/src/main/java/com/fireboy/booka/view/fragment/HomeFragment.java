@@ -65,5 +65,4 @@ public class HomeFragment extends Fragment {
 
         rvCategory.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
-
 }

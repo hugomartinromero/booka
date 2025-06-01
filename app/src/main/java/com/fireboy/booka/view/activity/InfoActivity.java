@@ -15,7 +15,6 @@ import com.fireboy.booka.R;
 import com.fireboy.booka.controller.BusinessController;
 import com.fireboy.booka.controller.ReviewController;
 import com.fireboy.booka.utils.BottomPaddingDecoration;
-import com.fireboy.booka.view.UiExtensions;
 import com.fireboy.booka.view.adapter.ReviewAdapter;
 import com.fireboy.booka.view.adapter.ServiceAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -76,7 +75,7 @@ public class InfoActivity extends AppCompatActivity {
         lblBusinessName = findViewById(R.id.lblBusinessName);
         lblBusinessAddress = findViewById(R.id.lblBusinessAddress);
         lblRating = findViewById(R.id.lblRating);
-        txtEmptyReviews = findViewById(R.id.txtEmptyReviews);
+        txtEmptyReviews = findViewById(R.id.lblEmptyReviews);
         rvServices = findViewById(R.id.rvServices);
         rvReviewsInfo = findViewById(R.id.rvReviewsInfo);
         btnBooking = findViewById(R.id.btnBooking);

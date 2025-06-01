@@ -4,18 +4,20 @@ public class Reservation {
     private String userId;
     private String businessId;
     private String service;
-    private String date; // formato "2025-06-01"
-    private String time; // formato "15:00"
+    private String date;
+    private String time;
+    private double price;
 
     public Reservation() {
     }
 
-    public Reservation(String userId, String businessId, String service, String date, String time) {
+    public Reservation(String userId, String businessId, String service, String date, String time, double price) {
         this.userId = userId;
         this.businessId = businessId;
         this.service = service;
         this.date = date;
         this.time = time;
+        this.price = price;
     }
 
     public String getUserId() {
@@ -56,5 +58,13 @@ public class Reservation {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

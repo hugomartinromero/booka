@@ -24,8 +24,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -72,7 +70,8 @@ public class BookingActivity extends AppCompatActivity {
                         business.getId(),
                         selectedService.getName(),
                         txtDatePicker2.getText().toString(),
-                        spSchedule.getText().toString());
+                        spSchedule.getText().toString(),
+                        selectedService.getPrice());
 
                 rc.createReservation(reservation);
             });

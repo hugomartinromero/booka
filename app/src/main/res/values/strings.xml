@@ -28,4 +28,6 @@
     <string name="reservar">Reservar</string>
     <string name="fecha">Fecha</string>
     <string name="horarios_disponibles">Horarios disponibles</string>
+    <string name="reservas">Reservas</string>
+    <string name="no_hay_reservas_a_n">No hay reservas aún.</string>
 </resources>
