@@ -27,111 +27,183 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Actividad donde el usuario puede reservar un servicio ofrecido por un negocio.
+ * Permite elegir servicio, fecha y horario disponible.
+ */
 public class BookingActivity extends AppCompatActivity {
-    TextView lblBooking;
-    TextInputEditText txtDatePicker2, txtSchedule2;
-    RecyclerView rvServices;
-    AutoCompleteTextView spSchedule;
-    MaterialButton btnBooking;
 
-    BusinessController businessController;
+    private TextView lblBusinessName;
+    private TextInputEditText txtDate;
+    private AutoCompleteTextView spSchedule;
+    private RecyclerView rvServices;
+    private MaterialButton btnReserve;
 
+    private ServiceAdapter serviceAdapter;
+    private BusinessController businessController;
+
+    /**
+     * Método principal llamado al crear la actividad. Inicializa vistas y obtiene el negocio.
+     *
+     * @param savedInstanceState Estado previo de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
-        initComponents();
+        initViews();
 
         businessController = new BusinessController();
+        final String businessId = getIntent().getStringExtra("businessId");
 
-        businessController.getBusinessById(getIntent().getStringExtra("businessId"), business -> {
-            lblBooking.setText(business.getName());
+        if (businessId == null || businessId.trim().isEmpty()) {
+            Toast.makeText(this, "ID de negocio no válido.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-            ServiceAdapter sa = new ServiceAdapter(business.getServices(), this, true);
+        loadBusinessData(businessId);
+    }
 
-            rvServices.setLayoutManager(new LinearLayoutManager(this));
-            rvServices.setAdapter(sa);
+    /**
+     * Asocia las variables de clase con las vistas del layout.
+     */
+    private void initViews() {
+        lblBusinessName = findViewById(R.id.lblBooking);
+        txtDate = findViewById(R.id.txtDatePicker2);
+        spSchedule = findViewById(R.id.spSchedule);
+        rvServices = findViewById(R.id.rvServices);
+        btnReserve = findViewById(R.id.btnBooking);
+    }
 
-            txtDatePicker2.setOnClickListener(v -> showDatePicker(business.getSchedule()));
+    /**
+     * Obtiene la información del negocio y configura la vista con sus servicios y horarios.
+     *
+     * @param businessId ID del negocio seleccionado.
+     */
+    private void loadBusinessData(String businessId) {
+        businessController.getBusinessById(businessId, business -> {
+            if (business == null) {
+                Toast.makeText(this, "Negocio no encontrado.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
 
-            btnBooking.setOnClickListener(v -> {
-                ReservationController rc = new ReservationController(this);
-                AuthController ac = new AuthController(this);
+            lblBusinessName.setText(business.getName());
+            setupServicesList(business.getServices());
 
-                Service selectedService = sa.getSelectedService();
-
-                if (selectedService == null) {
-                    Toast.makeText(this, "Por favor, selecciona un servicio.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Reservation reservation = new Reservation(ac.getCurrentUser().getUid(),
-                        business.getId(),
-                        selectedService.getName(),
-                        txtDatePicker2.getText().toString(),
-                        spSchedule.getText().toString(),
-                        selectedService.getPrice());
-
-                rc.createReservation(reservation);
-            });
+            txtDate.setOnClickListener(v -> showDatePicker(business.getSchedule()));
+            btnReserve.setOnClickListener(v -> reserveService(business.getId(), business.getSchedule()));
         });
     }
 
-    private void initComponents() {
-        lblBooking = findViewById(R.id.lblBooking);
-        rvServices = findViewById(R.id.rvServices);
-        txtDatePicker2 = findViewById(R.id.txtDatePicker2);
-        spSchedule = findViewById(R.id.spSchedule);
-        btnBooking = findViewById(R.id.btnBooking);
+    /**
+     * Configura el RecyclerView con los servicios del negocio.
+     *
+     * @param services Lista de servicios ofrecidos.
+     */
+    private void setupServicesList(java.util.List<Service> services) {
+        serviceAdapter = new ServiceAdapter(services, this, true);
+        rvServices.setLayoutManager(new LinearLayoutManager(this));
+        rvServices.setAdapter(serviceAdapter);
     }
 
+    /**
+     * Muestra un DatePicker con fechas limitadas al mes actual.
+     *
+     * @param schedule Mapa de horarios disponibles por día.
+     */
     private void showDatePicker(Map<String, DaySchedule> schedule) {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dialog = new DatePickerDialog(this, (view, y, m, d) ->
+                onDateSelected(y, m, d, schedule), year, month, day);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, y, m, d) -> {
-            onDateSelected(y, m, d, schedule);
-        }, year, month, day);
-
-        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-
-        Calendar maxDate = (Calendar) calendar.clone();
-        maxDate.add(Calendar.MONTH, 1);
-        datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
-
-        datePickerDialog.show();
+        dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        calendar.add(Calendar.MONTH, 1);
+        dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        dialog.show();
     }
 
+    /**
+     * Maneja la lógica al seleccionar una fecha y actualiza el horario disponible.
+     *
+     * @param year     Año seleccionado.
+     * @param month    Mes seleccionado (0–11).
+     * @param day      Día del mes.
+     * @param schedule Horario completo del negocio.
+     */
     private void onDateSelected(int year, int month, int day, Map<String, DaySchedule> schedule) {
-        Calendar selectedDate = Calendar.getInstance();
+        final Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, month, day);
 
-        String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month + 1, year);
-        txtDatePicker2.setText(formattedDate);
+        final String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month + 1, year);
+        txtDate.setText(formattedDate);
 
-        String dayName = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(selectedDate.getTime());
-        updateScheduleSpinner(dayName.toLowerCase(), schedule);
+        final String dayName = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(selectedDate.getTime()).toLowerCase();
+        updateScheduleOptions(dayName, schedule);
     }
 
-    private void updateScheduleSpinner(String dayKey, Map<String, DaySchedule> schedule) {
-        DaySchedule daySchedule = schedule.get(dayKey);
+    /**
+     * Muestra los horarios disponibles para el día seleccionado en el spinner.
+     *
+     * @param dayKey   Día en inglés (ej. "monday").
+     * @param schedule Horarios del negocio.
+     */
+    private void updateScheduleOptions(String dayKey, Map<String, DaySchedule> schedule) {
+        final DaySchedule daySchedule = schedule.get(dayKey);
 
-        if (daySchedule != null && daySchedule.getAvailable().get(0) != null) {
+        if (daySchedule != null && daySchedule.getAvailable() != null && !daySchedule.getAvailable().isEmpty()) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     this,
                     android.R.layout.simple_dropdown_item_1line,
                     daySchedule.getAvailable()
             );
-
             spSchedule.setAdapter(adapter);
             spSchedule.setOnClickListener(v -> spSchedule.showDropDown());
         } else {
             spSchedule.setAdapter(null);
             Toast.makeText(this, "No hay horarios disponibles para ese día.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Crea y envía una reserva a Firebase con los datos seleccionados.
+     *
+     * @param businessId ID del negocio.
+     * @param schedule   Horarios del negocio.
+     */
+    private void reserveService(String businessId, Map<String, DaySchedule> schedule) {
+        final AuthController authController = new AuthController(this);
+        final ReservationController reservationController = new ReservationController(this);
+
+        final Service selectedService = serviceAdapter.getSelectedService();
+        final String selectedDate = txtDate.getText() != null ? txtDate.getText().toString() : "";
+        final String selectedTime = spSchedule.getText() != null ? spSchedule.getText().toString() : "";
+
+        if (selectedService == null) {
+            Toast.makeText(this, "Por favor, selecciona un servicio.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedDate.isEmpty() || selectedTime.isEmpty()) {
+            Toast.makeText(this, "Selecciona fecha y hora para la reserva.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Reservation reservation = new Reservation(
+                authController.getCurrentUser().getUid(),
+                businessId,
+                selectedService.getName(),
+                selectedDate,
+                selectedTime,
+                selectedService.getPrice()
+        );
+
+        reservationController.createReservation(reservation);
     }
 }

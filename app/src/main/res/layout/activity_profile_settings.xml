@@ -116,7 +116,7 @@
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center_vertical"
         android:paddingHorizontal="55dp"
-        android:text="@string/configuraci_n"
+        android:text="@string/configuracion"
         android:textAlignment="center"
         android:textColor="@color/booka_text_primary"
         android:textSize="20sp"

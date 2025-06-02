@@ -18,47 +18,58 @@ import com.fireboy.booka.utils.FormatUtils;
 
 import java.util.List;
 
+/**
+ * Adaptador que muestra una lista de servicios. En modo booking, permite seleccionar un servicio.
+ */
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
-    private List<Service> dataset;
-    private Context context;
-    private boolean isBookingView;
+
+    private final List<Service> dataset;
+    private final Context context;
+    private final boolean isBookingView;
     private int selectedPosition = -1;
 
+    /**
+     * Constructor del adaptador.
+     *
+     * @param dataset        Lista de servicios a mostrar.
+     * @param context        Contexto de la actividad o fragmento.
+     * @param isBookingView  Indica si está en modo selección de servicio (reserva).
+     */
     public ServiceAdapter(List<Service> dataset, Context context, boolean isBookingView) {
         this.dataset = dataset;
         this.context = context;
         this.isBookingView = isBookingView;
     }
 
+    /**
+     * Infla la vista de la tarjeta de servicio.
+     */
     @NonNull
     @Override
-    public ServiceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.service_card, parent, false);
-        return new ServiceAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
+    /**
+     * Asocia los datos del servicio a la vista y gestiona la lógica de selección si aplica.
+     */
     @Override
-    public void onBindViewHolder(@NonNull ServiceAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Service service = dataset.get(position);
 
         holder.lblName.setText(service.getName());
-        holder.lblDuration.setText(String.format("%s min", service.getDuration()));
+        holder.lblDuration.setText(String.format("%d min", service.getDuration()));
         holder.lblPrice.setText(String.format("%s €", FormatUtils.formatDouble(service.getPrice())));
 
         if (isBookingView) {
             holder.bgService.setSelected(position == selectedPosition);
 
             holder.bgService.setOnClickListener(v -> {
-                if (selectedPosition == holder.getAdapterPosition()) {
-                    selectedPosition = -1;
-                    notifyItemChanged(holder.getAdapterPosition());
-                } else {
-                    int oldPosition = selectedPosition;
-                    selectedPosition = holder.getAdapterPosition();
-                    notifyItemChanged(oldPosition);
-                    notifyItemChanged(selectedPosition);
-                }
+                int previous = selectedPosition;
+                selectedPosition = (selectedPosition == holder.getAdapterPosition()) ? -1 : holder.getAdapterPosition();
+                notifyItemChanged(previous);
+                notifyItemChanged(selectedPosition);
             });
 
             if (position == selectedPosition) {
@@ -72,15 +83,38 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         }
     }
 
+    /**
+     * @return Número de ítems (servicios) en la lista.
+     */
     @Override
     public int getItemCount() {
         return dataset.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * Devuelve el servicio seleccionado si hay uno, o {@code null} si no hay selección.
+     *
+     * @return Servicio seleccionado o null.
+     */
+    public Service getSelectedService() {
+        if (selectedPosition >= 0 && selectedPosition < dataset.size()) {
+            return dataset.get(selectedPosition);
+        }
+        return null;
+    }
+
+    /**
+     * ViewHolder que representa cada tarjeta de servicio.
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout bgService;
         TextView lblName, lblDuration, lblPrice;
 
+        /**
+         * Constructor que enlaza las vistas de la tarjeta.
+         *
+         * @param itemView Vista inflada del ítem.
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bgService = itemView.findViewById(R.id.bgService);
@@ -88,12 +122,5 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             lblDuration = itemView.findViewById(R.id.lblServiceDuration);
             lblPrice = itemView.findViewById(R.id.lblServicePrice);
         }
-    }
-
-    public Service getSelectedService() {
-        if (selectedPosition >= 0 && selectedPosition < dataset.size()) {
-            return dataset.get(selectedPosition);
-        }
-        return null;
     }
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.fireboy.booka.model.Reservation;
+import com.fireboy.booka.utils.Constants;
 import com.fireboy.booka.view.UiExtensions;
 import com.fireboy.booka.view.activity.MainActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -15,74 +16,112 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Controlador encargado de gestionar las operaciones relacionadas con las reservas en Firebase Firestore.
+ *
+ * Permite crear reservas, validar disponibilidad y obtener reservas de un usuario.
+ */
 public class ReservationController {
+
     private final FirebaseFirestore db;
     private final Activity activity;
 
+    /**
+     * Constructor que inicializa el controlador con la actividad actual.
+     *
+     * @param activity Actividad desde donde se instancia el controlador.
+     */
     public ReservationController(Activity activity) {
         this.activity = activity;
         this.db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Crea una nueva reserva en Firestore si la franja horaria está disponible.
+     * En caso de éxito, muestra un mensaje y redirige al usuario a {@link MainActivity}.
+     *
+     * @param reservation Objeto {@link Reservation} a crear.
+     */
     public void createReservation(Reservation reservation) {
         if (reservation == null) {
-            Toast.makeText(activity, "Datos de la reserva no válidos.", Toast.LENGTH_SHORT).show();
+            showToast("Datos de la reserva no válidos.");
             return;
         }
 
-        db.collection("reservations")
+        db.collection(Constants.RESERVATIONS_COLLECTION)
                 .whereEqualTo("businessId", reservation.getBusinessId())
                 .whereEqualTo("date", reservation.getDate())
                 .whereEqualTo("time", reservation.getTime())
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        Toast.makeText(activity, "Esta franja ya está reservada.", Toast.LENGTH_SHORT).show();
+                .addOnSuccessListener(snapshot -> {
+                    if (!snapshot.isEmpty()) {
+                        showToast("Esta franja ya está reservada.");
                     } else {
-                        db.collection("reservations")
+                        db.collection(Constants.RESERVATIONS_COLLECTION)
                                 .add(reservation)
                                 .addOnSuccessListener(docRef -> {
-                                    Toast.makeText(activity, "Reserva creada con éxito", Toast.LENGTH_SHORT).show();
+                                    showToast("Reserva creada con éxito.");
                                     UiExtensions.navigateTo(activity, MainActivity.class, true);
                                 })
                                 .addOnFailureListener(e ->
-                                        Toast.makeText(activity, "Error al crear reserva: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                                        showToast("Error al crear reserva: " + e.getMessage()));
                     }
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al verificar disponibilidad: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        showToast("Error al verificar disponibilidad: " + e.getMessage()));
     }
 
+    /**
+     * Obtiene todas las reservas asociadas al ID de usuario especificado.
+     *
+     * @param userId   ID del usuario.
+     * @param onResult Callback que recibe la lista de reservas.
+     */
     public void getReservationsByUserId(@NonNull String userId, @NonNull Consumer<List<Reservation>> onResult) {
         if (userId.isEmpty()) {
-            Toast.makeText(activity, "ID de usuario no válido.", Toast.LENGTH_SHORT).show();
+            showToast("ID de usuario no válido.");
             return;
         }
 
-        db.collection("reservations")
+        db.collection(Constants.RESERVATIONS_COLLECTION)
                 .whereEqualTo("userId", userId)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Reservation> reservations = new ArrayList<>();
-
-                    if (querySnapshot.isEmpty()) {
-                        Toast.makeText(activity, "No tienes reservas registradas.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            try {
-                                Reservation reservation = doc.toObject(Reservation.class);
-                                if (reservation != null) {
-                                    reservations.add(reservation);
-                                }
-                            } catch (Exception e) {
-                                Toast.makeText(activity, "Error al leer reserva: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                .addOnSuccessListener(snapshot -> {
+                    List<Reservation> reservations = parseReservations(snapshot.getDocuments());
+                    if (reservations.isEmpty()) {
+                        showToast("No tienes reservas registradas.");
                     }
-
                     onResult.accept(reservations);
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al obtener reservas: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        showToast("Error al obtener reservas: " + e.getMessage()));
+    }
+
+    /**
+     * Muestra un mensaje tipo Toast en la actividad actual.
+     *
+     * @param message Texto a mostrar.
+     */
+    private void showToast(String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Convierte una lista de documentos Firestore a una lista de objetos {@link Reservation}.
+     *
+     * @param docs Lista de documentos.
+     * @return Lista de reservas parseadas.
+     */
+    private List<Reservation> parseReservations(List<DocumentSnapshot> docs) {
+        List<Reservation> reservations = new ArrayList<>();
+        for (DocumentSnapshot doc : docs) {
+            try {
+                Reservation r = doc.toObject(Reservation.class);
+                if (r != null) reservations.add(r);
+            } catch (Exception e) {
+                showToast("Error al leer reserva: " + e.getMessage());
+            }
+        }
+        return reservations;
     }
 }

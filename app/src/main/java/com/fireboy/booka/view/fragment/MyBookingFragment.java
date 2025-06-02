@@ -1,17 +1,16 @@
 package com.fireboy.booka.view.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.fireboy.booka.R;
 import com.fireboy.booka.controller.AuthController;
@@ -26,53 +25,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Fragmento que muestra las reservas del usuario agrupadas por fecha.
+ */
 public class MyBookingFragment extends Fragment {
-    TextView lblReservations, lblEmptyReservations;
-    RecyclerView rvDate;
-    View progressLoader;
-    View homeContent;
 
-    ReservationController rc;
-    AuthController ac;
+    private TextView lblReservations, lblEmptyReservations;
+    private RecyclerView rvDate;
+    private View progressLoader, homeContent;
+
+    private ReservationController reservationController;
+    private AuthController authController;
 
     public MyBookingFragment() {}
 
+    /**
+     * Infla el layout del fragmento.
+     */
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_my_bookings, container, false);
     }
 
+    /**
+     * Se ejecuta al completar la creación de la vista.
+     * Carga las reservas del usuario y las muestra agrupadas por fecha.
+     */
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initComponents(view);
         initRecyclerView();
-
-        rc.getReservationsByUserId(ac.getCurrentUser().getUid(), reservations -> {
-            if (reservations.isEmpty()) {
-                lblReservations.setVisibility(View.VISIBLE);
-                lblEmptyReservations.setVisibility(View.VISIBLE);
-            } else {
-                Map<String, List<Reservation>> grouped = new HashMap<>();
-
-                for (Reservation r : reservations) {
-                    if (!grouped.containsKey(r.getDate())) {
-                        grouped.put(r.getDate(), new ArrayList<>());
-                    }
-                    grouped.get(r.getDate()).add(r);
-                }
-
-                rvDate.setAdapter(new ReservationDateAdapter(grouped, requireActivity()));
-            }
-
-            progressLoader.setVisibility(View.GONE);
-            homeContent.setVisibility(View.VISIBLE);
-        });
-
+        loadUserReservations();
     }
 
+    /**
+     * Inicializa los elementos visuales y los controladores.
+     */
     private void initComponents(View view) {
         lblReservations = view.findViewById(R.id.lblReservations);
         lblEmptyReservations = view.findViewById(R.id.lblEmptyReservations);
@@ -80,13 +74,16 @@ public class MyBookingFragment extends Fragment {
         progressLoader = view.findViewById(R.id.progressLoader);
         homeContent = view.findViewById(R.id.homeContent2);
 
-        rc = new ReservationController(requireActivity());
-        ac = new AuthController(requireActivity());
+        reservationController = new ReservationController(requireActivity());
+        authController = new AuthController(requireActivity());
     }
 
+    /**
+     * Configura el RecyclerView con espaciado vertical y padding inferior.
+     */
     private void initRecyclerView() {
-        int spacing = (int) (this.getResources().getDisplayMetrics().density * 30); // 30dp
-        int extraBottom = (int) (getResources().getDisplayMetrics().density * 60);  // 60dp
+        int spacing = (int) (getResources().getDisplayMetrics().density * 30); // 30dp
+        int extraBottom = (int) (getResources().getDisplayMetrics().density * 60); // 60dp
 
         if (rvDate.getItemDecorationCount() == 0) {
             rvDate.addItemDecoration(new VerticalSpacingDecoration(spacing));
@@ -94,5 +91,46 @@ public class MyBookingFragment extends Fragment {
         }
 
         rvDate.setLayoutManager(new LinearLayoutManager(requireContext()));
+    }
+
+    /**
+     * Carga las reservas del usuario autenticado y las agrupa por fecha.
+     * Muestra mensaje si no hay reservas.
+     */
+    private void loadUserReservations() {
+        String userId = authController.getCurrentUser().getUid();
+
+        reservationController.getReservationsByUserId(userId, reservations -> {
+            if (reservations.isEmpty()) {
+                lblReservations.setVisibility(View.VISIBLE);
+                lblEmptyReservations.setVisibility(View.VISIBLE);
+            } else {
+                Map<String, List<Reservation>> grouped = groupReservationsByDate(reservations);
+                rvDate.setAdapter(new ReservationDateAdapter(grouped, requireActivity()));
+            }
+
+            progressLoader.setVisibility(View.GONE);
+            homeContent.setVisibility(View.VISIBLE);
+        });
+    }
+
+    /**
+     * Agrupa una lista de reservas por fecha.
+     *
+     * @param reservations Lista de reservas del usuario.
+     * @return Mapa agrupado por fecha (clave: String).
+     */
+    private Map<String, List<Reservation>> groupReservationsByDate(List<Reservation> reservations) {
+        Map<String, List<Reservation>> grouped = new HashMap<>();
+
+        for (Reservation r : reservations) {
+            String date = r.getDate();
+            if (!grouped.containsKey(date)) {
+                grouped.put(date, new ArrayList<>());
+            }
+            grouped.get(date).add(r);
+        }
+
+        return grouped;
     }
 }
