@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.fireboy.booka.model.Reservation;
+import com.fireboy.booka.utils.Constants;
 import com.fireboy.booka.view.UiExtensions;
 import com.fireboy.booka.view.activity.MainActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,7 +31,7 @@ public class ReservationController {
             return;
         }
 
-        db.collection("reservations")
+        db.collection(Constants.RESERVATIONS_COLLECTION)
                 .whereEqualTo("businessId", reservation.getBusinessId())
                 .whereEqualTo("date", reservation.getDate())
                 .whereEqualTo("time", reservation.getTime())
@@ -39,7 +40,7 @@ public class ReservationController {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         Toast.makeText(activity, "Esta franja ya está reservada.", Toast.LENGTH_SHORT).show();
                     } else {
-                        db.collection("reservations")
+                        db.collection(Constants.RESERVATIONS_COLLECTION)
                                 .add(reservation)
                                 .addOnSuccessListener(docRef -> {
                                     Toast.makeText(activity, "Reserva creada con éxito", Toast.LENGTH_SHORT).show();
@@ -59,7 +60,7 @@ public class ReservationController {
             return;
         }
 
-        db.collection("reservations")
+        db.collection(Constants.RESERVATIONS_COLLECTION)
                 .whereEqualTo("userId", userId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {

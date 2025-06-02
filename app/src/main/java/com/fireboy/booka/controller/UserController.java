@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.fireboy.booka.R;
 import com.fireboy.booka.model.User;
+import com.fireboy.booka.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,7 +27,7 @@ public class UserController {
 
     public void saveUserToFirestore(FirebaseUser firebaseUser, Activity activity) {
         String uid = firebaseUser.getUid();
-        DocumentReference docRef = db.collection("users").document(uid);
+        DocumentReference docRef = db.collection(Constants.USERS_COLLECTION).document(uid);
 
         docRef.get().addOnSuccessListener(document -> {
             if (!document.exists()) {
@@ -56,7 +57,7 @@ public class UserController {
                 activity.getString(R.string.default_pic_link)
         );
 
-        db.collection("users").document(uid)
+        db.collection(Constants.USERS_COLLECTION).document(uid)
                 .set(user)
                 .addOnSuccessListener(unused ->
                         Toast.makeText(activity, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show())
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     public void getUserById(@NonNull String userId, @NonNull Consumer<User> onSuccess) {
-        db.collection("users").document(userId)
+        db.collection(Constants.USERS_COLLECTION).document(userId)
                 .get()
                 .addOnSuccessListener(snapshot -> {
                     if (snapshot.exists()) {
@@ -86,7 +87,7 @@ public class UserController {
     public void updateUsernameInFirestore(String newName) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore.getInstance()
-                .collection("users")
+                .collection(Constants.USERS_COLLECTION)
                 .document(uid)
                 .update("username", newName.trim())
                 .addOnSuccessListener(aVoid ->

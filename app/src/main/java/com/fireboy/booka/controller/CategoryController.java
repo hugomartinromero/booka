@@ -1,6 +1,7 @@
 package com.fireboy.booka.controller;
 
 import com.fireboy.booka.model.Category;
+import com.fireboy.booka.utils.Constants;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,7 +21,7 @@ public class CategoryController {
     }
 
     public void getAllCategories(CategoryCallback callback) {
-        db.collection("category")
+        db.collection(Constants.CATEGORIES_COLLECTION)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     List<Category> list = new ArrayList<>();
@@ -36,7 +37,7 @@ public class CategoryController {
     }
 
     public void getActiveCategories(CategoryCallback callback) {
-        db.collection("category")
+        db.collection(Constants.CATEGORIES_COLLECTION)
                 .whereEqualTo("active", true)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {

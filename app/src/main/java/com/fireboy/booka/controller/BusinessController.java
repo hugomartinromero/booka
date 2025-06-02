@@ -1,6 +1,7 @@
 package com.fireboy.booka.controller;
 
 import com.fireboy.booka.model.Business;
+import com.fireboy.booka.utils.Constants;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -19,7 +20,7 @@ public class BusinessController {
     }
 
     public void getAllBusinesses(BusinessCallback callback) {
-        db.collection("business")
+        db.collection(Constants.BUSINESSES_COLLECTION)
                 .get()
                 .addOnSuccessListener(snapshot -> {
                     List<Business> list = new ArrayList<>();
@@ -35,7 +36,7 @@ public class BusinessController {
     }
 
     public void getBusinessById(String businessId, BusinessSingleCallback callback) {
-        db.collection("business").document(businessId)
+        db.collection(Constants.BUSINESSES_COLLECTION).document(businessId)
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
@@ -49,7 +50,7 @@ public class BusinessController {
     }
 
     public void getBusinessByCategory(String category, BusinessCallback callback) {
-        db.collection("business")
+        db.collection(Constants.BUSINESSES_COLLECTION)
                 .whereEqualTo("category", category)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {

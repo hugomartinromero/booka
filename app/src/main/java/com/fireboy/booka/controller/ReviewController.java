@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.fireboy.booka.model.Review;
+import com.fireboy.booka.utils.Constants;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -29,7 +30,7 @@ public class ReviewController {
             return;
         }
 
-        db.collection("review")
+        db.collection(Constants.REVIEWS_COLLECTION)
                 .add(review)
                 .addOnSuccessListener(docRef -> {
                     Toast.makeText(activity, "¡Reseña enviada con éxito!", Toast.LENGTH_SHORT).show();
@@ -45,7 +46,7 @@ public class ReviewController {
             return;
         }
 
-        db.collection("review")
+        db.collection(Constants.REVIEWS_COLLECTION)
                 .whereEqualTo("businessId", businessId)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
@@ -63,7 +64,7 @@ public class ReviewController {
     }
 
     public void getReviewsByUserId(@NonNull String userId, @NonNull Consumer<List<Review>> onResult) {
-        db.collection("review")
+        db.collection(Constants.REVIEWS_COLLECTION)
                 .whereEqualTo("userId", userId)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
