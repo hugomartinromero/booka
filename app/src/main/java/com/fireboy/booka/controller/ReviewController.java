@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 /**
  * Controlador encargado de gestionar las operaciones relacionadas con reseñas en Firebase Firestore.
- *
+ * <p>
  * Permite guardar reseñas, obtener reseñas por negocio y obtener reseñas por usuario.
  */
 public class ReviewController {
@@ -48,8 +48,11 @@ public class ReviewController {
 
         db.collection(Constants.REVIEWS_COLLECTION)
                 .add(review)
-                .addOnSuccessListener(docRef ->
-                        showToast("Reseña enviada con éxito."))
+                .addOnSuccessListener(docRef -> {
+                    showToast("Reseña enviada con éxito.");
+                    updateBusinessRating(review.getBusinessId());
+                    activity.finish();
+                })
                 .addOnFailureListener(e ->
                         showToast("Error al guardar reseña: " + e.getMessage()));
     }
@@ -100,6 +103,38 @@ public class ReviewController {
                 })
                 .addOnFailureListener(e ->
                         showToast("Error al obtener tus reseñas: " + e.getMessage()));
+    }
+
+    /**
+     * Calcula la media de todas las reseñas asociadas a un negocio y actualiza su rating en Firestore.
+     *
+     * @param businessId ID del negocio al que pertenecen las reseñas.
+     */
+    private void updateBusinessRating(String businessId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(Constants.REVIEWS_COLLECTION)
+                .whereEqualTo("businessId", businessId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    double total = 0;
+                    int count = 0;
+
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        Double rating = doc.getDouble("rating");
+                        if (rating != null) {
+                            total += rating;
+                            count++;
+                        }
+                    }
+
+                    if (count > 0) {
+                        double average = total / count;
+                        db.collection(Constants.BUSINESSES_COLLECTION)
+                                .document(businessId)
+                                .update("rating", average);
+                    }
+                });
     }
 
     /**
