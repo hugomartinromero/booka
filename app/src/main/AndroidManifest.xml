@@ -13,8 +13,13 @@
         android:theme="@style/Theme.Booka"
         tools:targetApi="31">
         <activity
+            android:name=".view.activity.ReviewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.BookingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.InfoActivity"
             android:exported="false"

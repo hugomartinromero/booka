@@ -48,4 +48,11 @@
         <item name="backgroundTint">@color/booka_primary</item>
     </style>
 
+    <!-- Estilo de RatingBar -->
+    <style name="RatingBarOrange" parent="@android:style/Widget.Material.RatingBar">
+        <item name="android:progressTint">@android:color/holo_orange_dark</item>
+        <item name="android:progressBackgroundTint">@color/booka_background</item>
+    </style>
+
+
 </resources>

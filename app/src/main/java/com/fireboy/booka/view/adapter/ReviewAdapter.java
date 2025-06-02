@@ -59,7 +59,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
         
         holder.lblDate.setText(FormatUtils.formatFirebaseTimestamp(review.getTimestamp()));
-        holder.lblRating.setText(String.valueOf(review.getRating()));
+        holder.lblRating.setText(String.valueOf((int) review.getRating()));
         holder.lblMessage.setText(review.getComment());
     }
 

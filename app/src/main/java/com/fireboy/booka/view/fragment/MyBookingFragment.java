@@ -64,7 +64,7 @@ public class MyBookingFragment extends Fragment {
                     grouped.get(r.getDate()).add(r);
                 }
 
-                rvDate.setAdapter(new ReservationDateAdapter(grouped));
+                rvDate.setAdapter(new ReservationDateAdapter(grouped, requireActivity()));
             }
 
             progressLoader.setVisibility(View.GONE);

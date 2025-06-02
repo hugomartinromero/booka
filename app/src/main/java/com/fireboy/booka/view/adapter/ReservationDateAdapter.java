@@ -1,5 +1,6 @@
 package com.fireboy.booka.view.adapter;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,12 @@ import java.util.Map;
 public class ReservationDateAdapter extends RecyclerView.Adapter<ReservationDateAdapter.ViewHolder> {
     private final Map<String, List<Reservation>> groupedReservations;
     private final List<String> dates;
+    private final Activity ACTIVITY;
 
-    public ReservationDateAdapter(Map<String, List<Reservation>> groupedReservations) {
+    public ReservationDateAdapter(Map<String, List<Reservation>> groupedReservations, Activity activity) {
         this.groupedReservations = groupedReservations;
         this.dates = new ArrayList<>(groupedReservations.keySet());
+        this.ACTIVITY = activity;
     }
 
     @NonNull
@@ -42,7 +45,7 @@ public class ReservationDateAdapter extends RecyclerView.Adapter<ReservationDate
         List<Reservation> reservationsForDate = groupedReservations.get(date);
         Collections.sort(reservationsForDate, Comparator.comparing(Reservation::getTime));
         holder.rvNested.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-        holder.rvNested.setAdapter(new ReservationAdapter(reservationsForDate));
+        holder.rvNested.setAdapter(new ReservationAdapter(reservationsForDate, ACTIVITY));
     }
 
     @Override
