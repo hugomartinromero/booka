@@ -27,7 +27,7 @@ public class ReservationController {
 
     public void createReservation(Reservation reservation) {
         if (reservation == null) {
-            Toast.makeText(activity, "Datos de la reserva no válidos.", Toast.LENGTH_SHORT).show();
+            showToast("Datos de la reserva no válidos.");
             return;
         }
 
@@ -36,54 +36,58 @@ public class ReservationController {
                 .whereEqualTo("date", reservation.getDate())
                 .whereEqualTo("time", reservation.getTime())
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        Toast.makeText(activity, "Esta franja ya está reservada.", Toast.LENGTH_SHORT).show();
+                .addOnSuccessListener(snapshot -> {
+                    if (!snapshot.isEmpty()) {
+                        showToast("Esta franja ya está reservada.");
                     } else {
                         db.collection(Constants.RESERVATIONS_COLLECTION)
                                 .add(reservation)
                                 .addOnSuccessListener(docRef -> {
-                                    Toast.makeText(activity, "Reserva creada con éxito", Toast.LENGTH_SHORT).show();
+                                    showToast("Reserva creada con éxito.");
                                     UiExtensions.navigateTo(activity, MainActivity.class, true);
                                 })
                                 .addOnFailureListener(e ->
-                                        Toast.makeText(activity, "Error al crear reserva: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                                        showToast("Error al crear reserva: " + e.getMessage()));
                     }
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al verificar disponibilidad: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        showToast("Error al verificar disponibilidad: " + e.getMessage()));
     }
 
     public void getReservationsByUserId(@NonNull String userId, @NonNull Consumer<List<Reservation>> onResult) {
         if (userId.isEmpty()) {
-            Toast.makeText(activity, "ID de usuario no válido.", Toast.LENGTH_SHORT).show();
+            showToast("ID de usuario no válido.");
             return;
         }
 
         db.collection(Constants.RESERVATIONS_COLLECTION)
                 .whereEqualTo("userId", userId)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Reservation> reservations = new ArrayList<>();
-
-                    if (querySnapshot.isEmpty()) {
-                        Toast.makeText(activity, "No tienes reservas registradas.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            try {
-                                Reservation reservation = doc.toObject(Reservation.class);
-                                if (reservation != null) {
-                                    reservations.add(reservation);
-                                }
-                            } catch (Exception e) {
-                                Toast.makeText(activity, "Error al leer reserva: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                .addOnSuccessListener(snapshot -> {
+                    List<Reservation> reservations = parseReservations(snapshot.getDocuments());
+                    if (reservations.isEmpty()) {
+                        showToast("No tienes reservas registradas.");
                     }
-
                     onResult.accept(reservations);
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al obtener reservas: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        showToast("Error al obtener reservas: " + e.getMessage()));
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Reservation> parseReservations(List<DocumentSnapshot> docs) {
+        List<Reservation> reservations = new ArrayList<>();
+        for (DocumentSnapshot doc : docs) {
+            try {
+                Reservation r = doc.toObject(Reservation.class);
+                if (r != null) reservations.add(r);
+            } catch (Exception e) {
+                showToast("Error al leer reserva: " + e.getMessage());
+            }
+        }
+        return reservations;
     }
 }

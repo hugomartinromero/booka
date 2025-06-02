@@ -25,7 +25,6 @@ public class HorizontalSpacingDecoration extends RecyclerView.ItemDecoration {
         if (position == 0) {
             outRect.left = space;
         }
-
         if (position == itemCount - 1) {
             outRect.right = space;
         }

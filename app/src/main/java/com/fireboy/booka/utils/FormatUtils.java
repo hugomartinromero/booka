@@ -9,17 +9,22 @@ import java.util.Date;
 import java.util.Locale;
 
 public class FormatUtils {
+
+    private static final DecimalFormatSymbols SPANISH_SYMBOLS = new DecimalFormatSymbols(Locale.getDefault());
+    private static final DecimalFormat DECIMAL_FORMAT;
+
+    static {
+        SPANISH_SYMBOLS.setDecimalSeparator(',');
+        DECIMAL_FORMAT = new DecimalFormat("#0.00", SPANISH_SYMBOLS);
+    }
+
     public static String formatDouble(double value) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator(',');
-        DecimalFormat df = new DecimalFormat("#0.00", symbols);
-        return df.format(value);
+        return DECIMAL_FORMAT.format(value);
     }
 
     public static String formatFirebaseTimestamp(Timestamp timestamp) {
         if (timestamp == null) return "";
         Date date = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        return sdf.format(date);
+        return new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date);
     }
 }

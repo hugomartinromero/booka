@@ -3,8 +3,8 @@ package com.fireboy.booka.controller;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.fireboy.booka.view.activity.MainActivity;
 import com.fireboy.booka.view.UiExtensions;
+import com.fireboy.booka.view.activity.MainActivity;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,42 +20,45 @@ public class AuthController {
     }
 
     public void signInWithEmail(String email, String password) {
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(activity, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (isFieldEmpty(email, password)) return;
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult ->
-                        UiExtensions.navigateTo(activity, MainActivity.class , true))
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnSuccessListener(authResult -> navigateToMain())
+                .addOnFailureListener(e -> showError("Error al iniciar sesión.", e));
     }
 
     public void signInWithGoogle(String idToken, UserController userController) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
-                    if (user != null) {
-                        userController.saveUserToFirestore(user, activity);
-                    }
-                    UiExtensions.navigateTo(activity, MainActivity.class , true);
+                    if (user != null) userController.saveUserToFirestore(user, activity);
+                    navigateToMain();
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e -> showError("Error al iniciar sesión con Google.", e));
     }
 
     public void registerWithEmail(String name, String email, String password, UserController userController) {
+        if (isFieldEmpty(email, password)) return;
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        userController.saveNewUserToFirestore(user, name, activity);
-                    }
+                    if (user != null) userController.saveNewUserToFirestore(user, name, activity);
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al registrarse: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e -> showError("Error al registrarse.", e));
+    }
+
+    public void recoverPassword(String email) {
+        if (email == null || email.isEmpty()) {
+            Toast.makeText(activity, "Por favor, introduce un correo válido.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(unused -> Toast.makeText(activity, "Correo de recuperación enviado.", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> showError("Error al enviar el correo.", e));
     }
 
     public void signOut() {
@@ -66,16 +69,19 @@ public class AuthController {
         return mAuth.getCurrentUser();
     }
 
-    public void recoverPassword(String email) {
-        if (email == null || email.isEmpty()) {
-            Toast.makeText(activity, "Por favor, introduce un correo válido.", Toast.LENGTH_SHORT).show();
-            return;
+    private boolean isFieldEmpty(String email, String password) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(activity, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
+            return true;
         }
+        return false;
+    }
 
-        mAuth.sendPasswordResetEmail(email)
-                .addOnSuccessListener(unused ->
-                        Toast.makeText(activity, "Correo de recuperación enviado.", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al enviar el correo: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    private void showError(String prefix, Exception e) {
+        Toast.makeText(activity, prefix + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    private void navigateToMain() {
+        UiExtensions.navigateTo(activity, MainActivity.class, true);
     }
 }

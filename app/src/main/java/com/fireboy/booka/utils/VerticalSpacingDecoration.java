@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class VerticalSpacingDecoration extends RecyclerView.ItemDecoration {
-    private final int space;
+    private final int spacing;
 
-    public VerticalSpacingDecoration(int space) {
-        this.space = space;
+    public VerticalSpacingDecoration(int spacing) {
+        this.spacing = spacing;
     }
 
     @Override
@@ -19,15 +19,14 @@ public class VerticalSpacingDecoration extends RecyclerView.ItemDecoration {
         int position = parent.getChildAdapterPosition(view);
         int itemCount = parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
 
-        outRect.top = space / 2;
-        outRect.bottom = space / 2;
+        outRect.top = spacing / 2;
+        outRect.bottom = spacing / 2;
 
         if (position == 0) {
-            outRect.top = space;
+            outRect.top = spacing;
         }
-
         if (position == itemCount - 1) {
-            outRect.bottom = space;
+            outRect.bottom = spacing;
         }
     }
 }

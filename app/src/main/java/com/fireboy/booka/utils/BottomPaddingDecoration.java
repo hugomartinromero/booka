@@ -21,7 +21,7 @@ public class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
         int itemCount = parent.getAdapter() != null ? parent.getAdapter().getItemCount() : 0;
 
         if (position == itemCount - 1) {
-            outRect.bottom = bottomPadding; // solo el último
+            outRect.bottom = bottomPadding;
         }
     }
 }

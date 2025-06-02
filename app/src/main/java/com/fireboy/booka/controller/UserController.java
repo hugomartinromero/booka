@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.fireboy.booka.R;
 import com.fireboy.booka.model.User;
 import com.fireboy.booka.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +25,11 @@ public class UserController {
     }
 
     public void saveUserToFirestore(FirebaseUser firebaseUser, Activity activity) {
+        if (firebaseUser == null) {
+            showToast("Error: Usuario no válido.");
+            return;
+        }
+
         String uid = firebaseUser.getUid();
         DocumentReference docRef = db.collection(Constants.USERS_COLLECTION).document(uid);
 
@@ -34,38 +38,43 @@ public class UserController {
                 User user = new User(
                         firebaseUser.getEmail(),
                         firebaseUser.getDisplayName() != null ? firebaseUser.getDisplayName() : "Usuario",
-                        "usuario",
+                        "user",
                         firebaseUser.getPhotoUrl() != null ? firebaseUser.getPhotoUrl().toString() : ""
                 );
 
                 docRef.set(user)
-                        .addOnSuccessListener(unused ->
-                                Toast.makeText(activity, "Usuario registrado con Google", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e ->
-                                Toast.makeText(activity, "Error al guardar usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        .addOnSuccessListener(unused -> showToast("Usuario registrado con Google."))
+                        .addOnFailureListener(e -> showToast("Error al guardar usuario: " + e.getMessage()));
             }
         });
     }
 
     public void saveNewUserToFirestore(FirebaseUser firebaseUser, String username, Activity activity) {
-        String uid = firebaseUser.getUid();
+        if (firebaseUser == null || username == null || username.trim().isEmpty()) {
+            showToast("Datos de usuario inválidos.");
+            return;
+        }
 
+        String uid = firebaseUser.getUid();
         User user = new User(
                 firebaseUser.getEmail(),
-                username,
-                "usuario",
-                activity.getString(R.string.default_pic_link)
+                username.trim(),
+                "user",
+                Constants.DEFAULT_PROFILE_PIC
         );
 
         db.collection(Constants.USERS_COLLECTION).document(uid)
                 .set(user)
-                .addOnSuccessListener(unused ->
-                        Toast.makeText(activity, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al guardar usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnSuccessListener(unused -> showToast("Usuario registrado correctamente"))
+                .addOnFailureListener(e -> showToast("Error al guardar usuario: " + e.getMessage()));
     }
 
     public void getUserById(@NonNull String userId, @NonNull Consumer<User> onSuccess) {
+        if (userId.trim().isEmpty()) {
+            showToast("ID de usuario no válido.");
+            return;
+        }
+
         db.collection(Constants.USERS_COLLECTION).document(userId)
                 .get()
                 .addOnSuccessListener(snapshot -> {
@@ -74,26 +83,31 @@ public class UserController {
                         if (user != null) {
                             onSuccess.accept(user);
                         } else {
-                            Toast.makeText(activity, "Error al interpretar el usuario.", Toast.LENGTH_LONG).show();
+                            showToast("Error al interpretar el usuario.");
                         }
                     } else {
-                        Toast.makeText(activity, "El usuario no existe.", Toast.LENGTH_LONG).show();
+                        showToast("El usuario no existe.");
                     }
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al obtener el usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e -> showToast("Error al obtener el usuario: " + e.getMessage()));
     }
 
     public void updateUsernameInFirestore(String newName) {
+        if (newName == null || newName.trim().isEmpty()) {
+            showToast("El nombre no puede estar vacío.");
+            return;
+        }
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseFirestore.getInstance()
-                .collection(Constants.USERS_COLLECTION)
+
+        db.collection(Constants.USERS_COLLECTION)
                 .document(uid)
                 .update("username", newName.trim())
-                .addOnSuccessListener(aVoid ->
-                        Toast.makeText(activity, "Nombre actualizado", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e ->
-                        Toast.makeText(activity, "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(aVoid -> showToast("Nombre actualizado."))
+                .addOnFailureListener(e -> showToast("Error al actualizar: " + e.getMessage()));
     }
 
+    private void showToast(String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+    }
 }

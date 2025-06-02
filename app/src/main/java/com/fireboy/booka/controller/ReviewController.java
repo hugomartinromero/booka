@@ -25,24 +25,22 @@ public class ReviewController {
     }
 
     public void saveReview(@NonNull Review review) {
-        if (review.getRating() < 0 || review.getRating() > 5 || review.getComment().isEmpty()) {
-            Toast.makeText(activity, "Por favor, escribe un comentario válido y puntúa de 0 a 5.", Toast.LENGTH_LONG).show();
+        if (!isValidReview(review)) {
+            showToast("Por favor, escribe un comentario válido y puntúa de 0 a 5.");
             return;
         }
 
         db.collection(Constants.REVIEWS_COLLECTION)
                 .add(review)
-                .addOnSuccessListener(docRef -> {
-                    Toast.makeText(activity, "¡Reseña enviada con éxito!", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(activity, "Error al guardar reseña: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                .addOnSuccessListener(docRef ->
+                        showToast("Reseña enviada con éxito."))
+                .addOnFailureListener(e ->
+                        showToast("Error al guardar reseña: " + e.getMessage()));
     }
 
     public void getReviewsByBusinessId(@NonNull String businessId, @NonNull Consumer<List<Review>> onResult) {
         if (businessId.trim().isEmpty()) {
-            Toast.makeText(activity, "ID del negocio no válido", Toast.LENGTH_SHORT).show();
+            showToast("ID del negocio no válido.");
             return;
         }
 
@@ -51,33 +49,45 @@ public class ReviewController {
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(query -> {
-                    List<Review> reviews = new ArrayList<>();
-                    for (QueryDocumentSnapshot doc : query) {
-                        Review review = doc.toObject(Review.class);
-                        reviews.add(review);
-                    }
+                    List<Review> reviews = parseReviews(query);
                     onResult.accept(reviews);
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(activity, "Error al obtener reseñas: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                .addOnFailureListener(e ->
+                        showToast("Error al obtener reseñas: " + e.getMessage()));
     }
 
     public void getReviewsByUserId(@NonNull String userId, @NonNull Consumer<List<Review>> onResult) {
+        if (userId.trim().isEmpty()) {
+            showToast("ID del usuario no válido.");
+            return;
+        }
+
         db.collection(Constants.REVIEWS_COLLECTION)
                 .whereEqualTo("userId", userId)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(query -> {
-                    List<Review> reviews = new ArrayList<>();
-                    query.forEach(doc -> {
-                        Review r = doc.toObject(Review.class);
-                        reviews.add(r);
-                    });
+                    List<Review> reviews = parseReviews(query);
                     onResult.accept(reviews);
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(activity, "Error al obtener tus reseñas: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                .addOnFailureListener(e ->
+                        showToast("Error al obtener tus reseñas: " + e.getMessage()));
+    }
+
+    private boolean isValidReview(Review r) {
+        return r.getRating() >= 0 && r.getRating() <= 5 && !r.getComment().isEmpty();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Review> parseReviews(Iterable<QueryDocumentSnapshot> docs) {
+        List<Review> reviews = new ArrayList<>();
+        for (QueryDocumentSnapshot doc : docs) {
+            Review r = doc.toObject(Review.class);
+            if (r != null) reviews.add(r);
+        }
+        return reviews;
     }
 }

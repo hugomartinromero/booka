@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="@string/no_hay_reservas_a_n"
+                android:text="@string/no_hay_reservas_aun"
                 android:textColor="@color/booka_text_secondary"
                 android:textSize="16sp"
                 android:visibility="gone"

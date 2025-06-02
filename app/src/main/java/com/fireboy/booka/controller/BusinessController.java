@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BusinessController {
@@ -23,29 +24,18 @@ public class BusinessController {
         db.collection(Constants.BUSINESSES_COLLECTION)
                 .get()
                 .addOnSuccessListener(snapshot -> {
-                    List<Business> list = new ArrayList<>();
-                    for (DocumentSnapshot doc : snapshot) {
-                        Business b = doc.toObject(Business.class);
-                        if (b != null) {
-                            b.setId(doc.getId());
-                            list.add(b);
-                        }
-                    }
+                    List<Business> list = parseBusinessList(snapshot.getDocuments());
                     callback.onResult(list);
-                });
+                })
+                .addOnFailureListener(e -> callback.onResult(new ArrayList<>()));
     }
 
     public void getBusinessById(String businessId, BusinessSingleCallback callback) {
         db.collection(Constants.BUSINESSES_COLLECTION).document(businessId)
                 .get()
                 .addOnSuccessListener(doc -> {
-                    if (doc.exists()) {
-                        Business b = doc.toObject(Business.class);
-                        if (b != null) {
-                            b.setId(doc.getId());
-                            callback.onResult(b);
-                        }
-                    }
+                    Business b = parseBusiness(doc);
+                    if (b != null) callback.onResult(b);
                 });
     }
 
@@ -53,21 +43,26 @@ public class BusinessController {
         db.collection(Constants.BUSINESSES_COLLECTION)
                 .whereEqualTo("category", category)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Business> list = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Business business = doc.toObject(Business.class);
-                        if (business != null) {
-                            business.setId(doc.getId());
-                            list.add(business);
-                        }
-                    }
-                    callback.onResult(list);
+                .addOnSuccessListener(snapshot -> {
+                    List<Business> businesses = parseBusinessList(snapshot.getDocuments());
+                    Collections.shuffle(businesses);
+                    callback.onResult(businesses);
                 })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    callback.onResult(new ArrayList<>()); // vacío si falla
-                });
+                .addOnFailureListener(e -> callback.onResult(new ArrayList<>()));
     }
 
+    private Business parseBusiness(DocumentSnapshot doc) {
+        Business business = doc.toObject(Business.class);
+        if (business != null) business.setId(doc.getId());
+        return business;
+    }
+
+    private List<Business> parseBusinessList(List<DocumentSnapshot> docs) {
+        List<Business> businesses = new ArrayList<>();
+        for (DocumentSnapshot doc : docs) {
+            Business b = parseBusiness(doc);
+            if (b != null) businesses.add(b);
+        }
+        return businesses;
+    }
 }

@@ -6,54 +6,54 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CategoryController {
-
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public interface CategoryCallback {
         void onResult(List<Category> categories);
     }
 
-    public interface CategoryCallbackSingle {
+    public interface CategorySingleCallback {
         void onResult(Category category);
     }
 
     public void getAllCategories(CategoryCallback callback) {
         db.collection(Constants.CATEGORIES_COLLECTION)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Category> list = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Category category = doc.toObject(Category.class);
-                        if (category != null) {
-                            category.setId(doc.getId());
-                            list.add(category);
-                        }
-                    }
-                    callback.onResult(list);
-                });
+                .addOnSuccessListener(snapshot -> {
+                    List<Category> categories = parseCategoryList(snapshot.getDocuments());
+                    callback.onResult(categories);
+                })
+                .addOnFailureListener(e -> callback.onResult(new ArrayList<>()));
     }
 
     public void getActiveCategories(CategoryCallback callback) {
         db.collection(Constants.CATEGORIES_COLLECTION)
                 .whereEqualTo("active", true)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Category> lista = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Category category = doc.toObject(Category.class);
-                        if (category != null) {
-                            category.setId(doc.getId());
-                            lista.add(category);
-                        }
-                    }
-                    callback.onResult(lista);
+                .addOnSuccessListener(snapshot -> {
+                    List<Category> categories = parseCategoryList(snapshot.getDocuments());
+                    Collections.shuffle(categories);
+                    callback.onResult(categories);
                 })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    callback.onResult(new ArrayList<>());
-                });
+                .addOnFailureListener(e -> callback.onResult(new ArrayList<>()));
+    }
+
+    private Category parseCategory(DocumentSnapshot doc) {
+        Category category = doc.toObject(Category.class);
+        if (category != null) category.setId(doc.getId());
+        return category;
+    }
+
+    private List<Category> parseCategoryList(List<DocumentSnapshot> docs) {
+        List<Category> categories = new ArrayList<>();
+        for (DocumentSnapshot doc : docs) {
+            Category c = parseCategory(doc);
+            if (c != null) categories.add(c);
+        }
+        return categories;
     }
 }
