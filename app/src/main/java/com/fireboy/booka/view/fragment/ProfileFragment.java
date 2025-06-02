@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
 
     private void initComponents(View view) {
         lblUserName = view.findViewById(R.id.lblUserName);
-        txtEmptyReviews = view.findViewById(R.id.txtEmptyReviews);
+        txtEmptyReviews = view.findViewById(R.id.lblEmptyReviews);
         imgProfile = view.findViewById(R.id.imgProfile);
         rvReview = view.findViewById(R.id.rvReviews);
         progressLoader = view.findViewById(R.id.progressLoader3);

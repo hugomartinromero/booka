@@ -9,18 +9,33 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.fireboy.booka.R;
+import com.fireboy.booka.controller.AuthController;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class RestorePasswordActivity extends AppCompatActivity {
+    private TextInputEditText txtEmail;
+    private MaterialButton btnRestorePassword;
+
+    AuthController ac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_restore_password);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        initComponents();
+
+        btnRestorePassword.setOnClickListener(v -> {
+            String email = txtEmail.getText().toString().trim();
+            ac.recoverPassword(email);
         });
+    }
+
+    private void initComponents() {
+        txtEmail = findViewById(R.id.txtRestorePasswordEmailContent);
+        btnRestorePassword = findViewById(R.id.btnRestorePassword);
+
+        ac = new AuthController(this);
     }
 }

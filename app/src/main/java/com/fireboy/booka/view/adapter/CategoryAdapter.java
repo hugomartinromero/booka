@@ -32,7 +32,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.category_card, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_card, parent, false);
         return new ViewHolder(view);
     }
 
@@ -68,8 +68,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            lblCategory = itemView.findViewById(R.id.lblCategory);
-            rvBusiness = itemView.findViewById(R.id.rvBusiness);
+            lblCategory = itemView.findViewById(R.id.lblMain);
+            rvBusiness = itemView.findViewById(R.id.rvNested);
         }
     }
 }

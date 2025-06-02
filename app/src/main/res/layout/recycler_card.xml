@@ -5,23 +5,23 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/lblCategory"
+        android:id="@+id/lblMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Negocio"
+        android:text="@string/textview"
         android:textColor="@color/booka_text_primary"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBusiness"
-        android:layout_width="wrap_content"
+        android:id="@+id/rvNested"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/lblMain" />
 </androidx.constraintlayout.widget.ConstraintLayout>

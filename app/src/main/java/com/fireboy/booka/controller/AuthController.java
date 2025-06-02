@@ -65,4 +65,17 @@ public class AuthController {
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
+
+    public void recoverPassword(String email) {
+        if (email == null || email.isEmpty()) {
+            Toast.makeText(activity, "Por favor, introduce un correo válido.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(unused ->
+                        Toast.makeText(activity, "Correo de recuperación enviado.", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(activity, "Error al enviar el correo: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
 }

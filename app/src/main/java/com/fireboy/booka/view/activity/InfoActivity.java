@@ -1,7 +1,9 @@
 package com.fireboy.booka.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class InfoActivity extends AppCompatActivity {
     ShapeableImageView imgBusiness;
     TextView lblBusinessName, lblBusinessAddress, lblRating, txtEmptyReviews;;
     RecyclerView rvServices, rvReviewsInfo;
+    Button btnBooking;
 
     BusinessController businessController;
 
@@ -30,6 +33,12 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         initComponents();
+
+        btnBooking.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BookingActivity.class);
+            intent.putExtra("businessId", getIntent().getStringExtra("businessId"));
+            this.startActivity(intent);
+        });
 
         businessController.getBusinessById(getIntent().getStringExtra("businessId"), business -> {
             Glide.with(this)
@@ -41,7 +50,7 @@ public class InfoActivity extends AppCompatActivity {
             lblRating.setText(String.valueOf(business.getRating()));
 
             rvServices.setLayoutManager(new LinearLayoutManager(this));
-            rvServices.setAdapter(new ServiceAdapter(business.getServices(), this));
+            rvServices.setAdapter(new ServiceAdapter(business.getServices(), this, false));
 
             ReviewController reviewController = new ReviewController(this);
             reviewController.getReviewsByBusinessId(business.getId(), reviews -> {
@@ -66,9 +75,10 @@ public class InfoActivity extends AppCompatActivity {
         lblBusinessName = findViewById(R.id.lblBusinessName);
         lblBusinessAddress = findViewById(R.id.lblBusinessAddress);
         lblRating = findViewById(R.id.lblRating);
-        txtEmptyReviews = findViewById(R.id.txtEmptyReviews);
+        txtEmptyReviews = findViewById(R.id.lblEmptyReviews);
         rvServices = findViewById(R.id.rvServices);
         rvReviewsInfo = findViewById(R.id.rvReviewsInfo);
+        btnBooking = findViewById(R.id.btnBooking);
 
         businessController = new BusinessController();
     }

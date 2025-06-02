@@ -11,6 +11,7 @@
     <color name="booka_text_secondary">#6B7280</color> <!-- Gris medio para descripciones -->
 
     <color name="white">#FFFFFF</color> <!-- Blanco -->
+    <color name="star_color">#ED8A19</color>
 
     <!-- Grises para inputs, bordes suaves -->
     <color name="booka_input_background">#F9FAFB</color>

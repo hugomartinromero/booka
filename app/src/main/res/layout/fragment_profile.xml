@@ -48,7 +48,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/lblReviews" />
 
             <TextView
-                android:id="@+id/txtEmptyReviews"
+                android:id="@+id/lblEmptyReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

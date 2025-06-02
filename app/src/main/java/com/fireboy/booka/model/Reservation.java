@@ -1,33 +1,23 @@
 package com.fireboy.booka.model;
 
 public class Reservation {
-    private String id;
     private String userId;
     private String businessId;
-    private String serviceId;
-    private String date; // formato "2025-06-01"
-    private String time; // formato "15:00"
-    private String status;
+    private String service;
+    private String date;
+    private String time;
+    private double price;
 
     public Reservation() {
     }
 
-    public Reservation(String id, String userId, String businessId, String serviceId, String date, String time, String status) {
-        this.id = id;
+    public Reservation(String userId, String businessId, String service, String date, String time, double price) {
         this.userId = userId;
         this.businessId = businessId;
-        this.serviceId = serviceId;
+        this.service = service;
         this.date = date;
         this.time = time;
-        this.status = status;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.price = price;
     }
 
     public String getUserId() {
@@ -46,12 +36,12 @@ public class Reservation {
         this.businessId = businessId;
     }
 
-    public String getServiceId() {
-        return serviceId;
+    public String getService() {
+        return service;
     }
 
-    public void setServiceId(String serviceId) {
-        this.serviceId = serviceId;
+    public void setService(String serviceId) {
+        this.service = serviceId;
     }
 
     public String getDate() {
@@ -70,11 +60,11 @@ public class Reservation {
         this.time = time;
     }
 
-    public String getStatus() {
-        return status;
+    public double getPrice() {
+        return price;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
