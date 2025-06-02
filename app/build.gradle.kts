@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -51,4 +53,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+}
+
+afterEvaluate {
+    tasks.register<DokkaTask>("dokkaHtml") {
+        outputDirectory.set(buildDir.resolve("dokka"))
+        dokkaSourceSets {
+            create("android") {
+                displayName.set("Android")
+                platform.set(org.jetbrains.dokka.Platform.jvm)
+                sourceRoots.from(file("src/main/java"))
+            }
+        }
+    }
 }
