@@ -2,6 +2,9 @@ package com.fireboy.booka.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -20,25 +23,25 @@ import com.fireboy.booka.view.fragment.ProfileFragment;
 
 /**
  * Actividad principal de la aplicación Booka.
- * Gestiona la navegación entre fragmentos (inicio, reservas, perfil) y la verificación de sesión.
+ * Gestiona la navegación entre fragmentos (Inicio, Reservas, Perfil),
+ * verifica la sesión de usuario y aplica el tema según configuración.
  */
 public class MainActivity extends AppCompatActivity {
 
+    private EditText txtBuscar;
     private FrameLayout[] bottomMenu;
     private ImageView imgSettings;
-
     private AuthController authController;
 
     /**
-     * Método principal llamado al crear la actividad.
-     * Verifica la sesión, configura el tema, inicializa vistas y carga el fragmento inicial.
+     * Método de ciclo de vida llamado al crear la actividad.
+     * Aplica el tema, valida sesión, inicializa componentes y listeners.
      *
-     * @param savedInstanceState Estado guardado de la instancia.
+     * @param savedInstanceState Estado de instancia anterior si existe.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         applyAppTheme();
-
         super.onCreate(savedInstanceState);
 
         authController = new AuthController(this);
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Aplica el tema claro u oscuro según la configuración guardada.
+     * Aplica el modo oscuro o claro según la configuración de usuario.
      */
     private void applyAppTheme() {
         if (SettingsUtils.isDarkModeEnabled(this)) {
@@ -74,50 +77,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Inicializa las vistas y carga el fragmento inicial.
+     * Inicializa los elementos visuales y carga el fragmento inicial.
      */
     private void initComponents() {
+        txtBuscar = findViewById(R.id.txtBuscar);
+        imgSettings = findViewById(R.id.settingsIcon);
+
         bottomMenu = new FrameLayout[]{
                 findViewById(R.id.nav_home),
                 findViewById(R.id.nav_bookmarks),
                 findViewById(R.id.nav_profile)
         };
 
-        imgSettings = findViewById(R.id.settingsIcon);
-
-        // Fragmento por defecto
+        // Cargar fragmento inicial (Inicio)
         loadFragment(new HomeFragment(), bottomMenu[0].getId());
     }
 
     /**
-     * Asocia listeners a los ítems del menú inferior y al botón de ajustes.
+     * Asocia los listeners de los botones de navegación y de búsqueda.
      */
     private void setupListeners() {
+        // Navegación inferior
         bottomMenu[0].setOnClickListener(v -> loadFragment(new HomeFragment(), R.id.nav_home));
         bottomMenu[1].setOnClickListener(v -> loadFragment(new MyBookingFragment(), R.id.nav_bookmarks));
         bottomMenu[2].setOnClickListener(v -> loadFragment(new ProfileFragment(), R.id.nav_profile));
 
+        // Botón ajustes
         imgSettings.setOnClickListener(v ->
-                UiExtensions.navigateTo(this, SettingsActivity.class, false));
+                UiExtensions.navigateTo(this, SettingsActivity.class, false)
+        );
+
+        // Búsqueda dinámica
+        txtBuscar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                if (fragment instanceof HomeFragment) {
+                    ((HomeFragment) fragment).filterBusinesses(s.toString());
+                }
+            }
+        });
     }
 
     /**
-     * Carga un fragmento dentro del contenedor principal y actualiza el estado del menú inferior.
+     * Reemplaza el fragmento actual por el indicado y marca la opción seleccionada.
      *
      * @param fragment Fragmento a cargar.
-     * @param idMenu   ID del ítem de menú que será marcado como activo.
+     * @param idMenu   ID del menú activo.
      */
     private void loadFragment(Fragment fragment, int idMenu) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment).commit();
-
         setActiveOption(idMenu);
     }
 
     /**
-     * Marca como seleccionado el ítem activo del menú inferior.
+     * Marca visualmente el botón de navegación activo.
      *
-     * @param idActivo ID del ítem activo.
+     * @param idActivo ID del botón activo.
      */
     private void setActiveOption(int idActivo) {
         for (FrameLayout option : bottomMenu) {

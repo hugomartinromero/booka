@@ -9,7 +9,6 @@ package com.fireboy.booka.model;
 public class Category {
     private String id;
     private String name;
-    private boolean active;
 
     /**
      * Constructor vacío requerido por Firebase Firestore.
@@ -22,12 +21,10 @@ public class Category {
      *
      * @param id     ID único del documento.
      * @param name   Nombre de la categoría.
-     * @param active Estado de activación (true si está disponible para el usuario).
      */
-    public Category(String id, String name, boolean active) {
+    public Category(String id, String name) {
         this.id = id;
         this.name = name;
-        this.active = active;
     }
 
     /**
@@ -60,21 +57,5 @@ public class Category {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return {@code true} si la categoría está activa y visible para los usuarios.
-     */
-    public boolean isActive() {
-        return active;
-    }
-
-    /**
-     * Activa o desactiva la categoría.
-     *
-     * @param active {@code true} para habilitar, {@code false} para ocultar.
-     */
-    public void setActive(boolean active) {
-        this.active = active;
     }
 }
