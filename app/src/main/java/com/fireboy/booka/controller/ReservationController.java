@@ -16,15 +16,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Controlador encargado de gestionar las operaciones relacionadas con las reservas en Firebase Firestore.
+ *
+ * Permite crear reservas, validar disponibilidad y obtener reservas de un usuario.
+ */
 public class ReservationController {
+
     private final FirebaseFirestore db;
     private final Activity activity;
 
+    /**
+     * Constructor que inicializa el controlador con la actividad actual.
+     *
+     * @param activity Actividad desde donde se instancia el controlador.
+     */
     public ReservationController(Activity activity) {
         this.activity = activity;
         this.db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Crea una nueva reserva en Firestore si la franja horaria está disponible.
+     * En caso de éxito, muestra un mensaje y redirige al usuario a {@link MainActivity}.
+     *
+     * @param reservation Objeto {@link Reservation} a crear.
+     */
     public void createReservation(Reservation reservation) {
         if (reservation == null) {
             showToast("Datos de la reserva no válidos.");
@@ -54,6 +71,12 @@ public class ReservationController {
                         showToast("Error al verificar disponibilidad: " + e.getMessage()));
     }
 
+    /**
+     * Obtiene todas las reservas asociadas al ID de usuario especificado.
+     *
+     * @param userId   ID del usuario.
+     * @param onResult Callback que recibe la lista de reservas.
+     */
     public void getReservationsByUserId(@NonNull String userId, @NonNull Consumer<List<Reservation>> onResult) {
         if (userId.isEmpty()) {
             showToast("ID de usuario no válido.");
@@ -74,10 +97,21 @@ public class ReservationController {
                         showToast("Error al obtener reservas: " + e.getMessage()));
     }
 
+    /**
+     * Muestra un mensaje tipo Toast en la actividad actual.
+     *
+     * @param message Texto a mostrar.
+     */
     private void showToast(String message) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Convierte una lista de documentos Firestore a una lista de objetos {@link Reservation}.
+     *
+     * @param docs Lista de documentos.
+     * @return Lista de reservas parseadas.
+     */
     private List<Reservation> parseReservations(List<DocumentSnapshot> docs) {
         List<Reservation> reservations = new ArrayList<>();
         for (DocumentSnapshot doc : docs) {
