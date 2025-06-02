@@ -10,36 +10,66 @@ import com.fireboy.booka.controller.AuthController;
 import com.fireboy.booka.controller.UserController;
 import com.google.android.material.textfield.TextInputEditText;
 
+/**
+ * Actividad que permite al usuario modificar su nombre de usuario.
+ * El correo solo se muestra como dato informativo.
+ */
 public class ProfileSettingsActivity extends AppCompatActivity {
-    TextInputEditText txtUsername, txtEmail;
 
-    AuthController authController;
+    private TextInputEditText txtUsername, txtEmail;
+    private AuthController authController;
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Carga el nombre de usuario y correo actual desde FirebaseAuth y configura el listener para editar.
+     *
+     * @param savedInstanceState Estado anterior de la actividad (si existe).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_settings);
 
         initComponents();
+        loadUserData();
+        setupUsernameUpdateListener();
+    }
 
-        txtUsername.setText(authController.getCurrentUser().getDisplayName());
-        txtEmail.setText(authController.getCurrentUser().getEmail());
+    /**
+     * Inicializa los componentes de la vista.
+     */
+    private void initComponents() {
+        txtUsername = findViewById(R.id.txtUsername);
+        txtEmail = findViewById(R.id.txtEmail2);
+        authController = new AuthController(this);
+    }
 
+    /**
+     * Carga y muestra los datos del usuario actual (username y correo).
+     */
+    private void loadUserData() {
+        if (authController.getCurrentUser() != null) {
+            txtUsername.setText(authController.getCurrentUser().getDisplayName());
+            txtEmail.setText(authController.getCurrentUser().getEmail());
+        }
+    }
+
+    /**
+     * Configura el listener para actualizar el nombre de usuario al presionar "Done" en el teclado.
+     */
+    private void setupUsernameUpdateListener() {
         txtUsername.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                UserController userController = new UserController(this);
+                final String newUsername = txtUsername.getText() != null ? txtUsername.getText().toString().trim() : "";
 
-                userController.updateUsernameInFirestore(txtUsername.getText().toString());
+                if (!newUsername.isEmpty()) {
+                    UserController userController = new UserController(this);
+                    userController.updateUsernameInFirestore(newUsername);
+                }
+
                 return true;
             }
             return false;
         });
-    }
-
-    private void initComponents() {
-        txtUsername = findViewById(R.id.txtUsername);
-        txtEmail = findViewById(R.id.txtEmail2);
-
-        authController = new AuthController(this);
     }
 }

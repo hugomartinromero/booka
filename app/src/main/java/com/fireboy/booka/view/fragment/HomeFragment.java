@@ -17,46 +17,61 @@ import com.fireboy.booka.utils.BottomPaddingDecoration;
 import com.fireboy.booka.utils.VerticalSpacingDecoration;
 import com.fireboy.booka.view.adapter.CategoryAdapter;
 
+/**
+ * Fragmento de inicio que muestra las categorías activas y sus negocios.
+ */
 public class HomeFragment extends Fragment {
-    RecyclerView rvCategory;
-    View progressLoader;
-    View homeContent;
 
-    CategoryController categoryController;
+    private RecyclerView rvCategory;
+    private View progressLoader;
+    private View homeContent;
+    private CategoryController categoryController;
 
+    /**
+     * Constructor vacío requerido para instanciar el fragmento.
+     */
     public HomeFragment() {}
 
+    /**
+     * Infla el layout XML del fragmento.
+     */
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    /**
+     * Se llama después de que la vista ha sido creada.
+     * Inicializa componentes y carga las categorías activas.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initComponents(view);
         initRecyclerView();
-
-        categoryController.getActiveCategories(categorias -> {
-            rvCategory.setAdapter(new CategoryAdapter(categorias, requireActivity()));
-            progressLoader.setVisibility(View.GONE);
-            homeContent.setVisibility(View.VISIBLE);
-        });
+        loadCategories();
     }
 
+    /**
+     * Inicializa los componentes de la interfaz y el controlador de categorías.
+     *
+     * @param view Vista raíz inflada del fragmento.
+     */
     private void initComponents(View view) {
         rvCategory = view.findViewById(R.id.rvCategory);
         progressLoader = view.findViewById(R.id.progressLoader);
         homeContent = view.findViewById(R.id.homeContent);
-
         categoryController = new CategoryController();
     }
 
+    /**
+     * Configura el RecyclerView de categorías con decoraciones y layout.
+     */
     private void initRecyclerView() {
-        int spacing = (int) (this.getResources().getDisplayMetrics().density * 30); // 30dp
-        int extraBottom = (int) (getResources().getDisplayMetrics().density * 60);  // 60dp
+        int spacing = (int) (getResources().getDisplayMetrics().density * 30); // 30dp
+        int extraBottom = (int) (getResources().getDisplayMetrics().density * 60); // 60dp
 
         if (rvCategory.getItemDecorationCount() == 0) {
             rvCategory.addItemDecoration(new VerticalSpacingDecoration(spacing));
@@ -64,5 +79,16 @@ public class HomeFragment extends Fragment {
         }
 
         rvCategory.setLayoutManager(new LinearLayoutManager(requireContext()));
+    }
+
+    /**
+     * Carga las categorías activas desde Firebase y actualiza el adaptador.
+     */
+    private void loadCategories() {
+        categoryController.getActiveCategories(categories -> {
+            rvCategory.setAdapter(new CategoryAdapter(categories, requireActivity()));
+            progressLoader.setVisibility(View.GONE);
+            homeContent.setVisibility(View.VISIBLE);
+        });
     }
 }
