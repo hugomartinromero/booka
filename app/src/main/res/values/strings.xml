@@ -31,4 +31,6 @@
     <string name="valoraci_n">Rating</string>
     <string name="mensaje">Message</string>
     <string name="enviar">Send</string>
+    <string name="idioma">Language</string>
+    <string name="cambiar_contrasena">Change password</string>
 </resources>

@@ -31,4 +31,6 @@
     <string name="valoraci_n">Valoración</string>
     <string name="mensaje">Mensaje</string>
     <string name="enviar">Enviar</string>
+    <string name="idioma">Idioma</string>
+    <string name="cambiar_contrasena">Cambiar contraseña</string>
 </resources>

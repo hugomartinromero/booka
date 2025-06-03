@@ -63,11 +63,11 @@ public class SettingsActivity extends AppCompatActivity {
         };
 
         String[] itemsTitle = new String[]{
-                "Detalles de la cuenta",
-                "Idioma",
-                "Cambiar contraseña",
-                "Conectar con Google",
-                "Modo oscuro"
+                getString(R.string.detalles_de_la_cuenta),
+                getString(R.string.idioma),
+                getString(R.string.cambiar_contrasena),
+                getString(R.string.conectar_con_google),
+                getString(R.string.modo_oscuro)
         };
 
         swDarkMode = items[4].findViewById(R.id.switchItem);
