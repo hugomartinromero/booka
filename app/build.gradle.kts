@@ -3,6 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    id("jacoco")
 }
 
 android {
